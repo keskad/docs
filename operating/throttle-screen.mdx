@@ -1,7 +1,7 @@
 ---
-title: 'Understanding the LongFred Throttle Screen'
+title: 'LongFred Throttle Screen — Complete Display Guide'
 sidebarTitle: 'Throttle Screen'
-description: 'A complete guide to every element displayed on the LongFred throttle screen, from slot number and speed to function states and the footer hint bar.'
+description: 'Every region of the LongFred throttle screen explained: slot number, speed, direction, loco addresses, power, heartbeat, functions, and the footer hint.'
 ---
 
 The throttle screen is the main operating view you spend most of your time on. It packs everything you need to drive a locomotive into a single compact OLED display, organised into distinct regions so you can read key information at a glance without taking your eyes off the layout for long.
@@ -25,13 +25,13 @@ The throttle screen is the main operating view you spend most of your time on. I
     Indicates whether track power is currently on or off as reported by the command station. Use **Menu → 8 Trk Power** to toggle it.
   </Card>
   <Card title="Heartbeat indicator" icon="heart-pulse">
-    Shows the state of the WiThrottle heartbeat. LongFred sends a keep-alive to the server every 10 seconds by default. You can toggle heartbeat transmission from **Menu → Extras → 3 Heartbt Tgl**.
+    Shows the state of the WiThrottle heartbeat. LongFred sends a keep-alive to the server every 10 seconds by default. You can toggle heartbeat transmission from **Menu → Extras**, then navigate to **3 Heartbt Tgl** and press **OK**.
   </Card>
   <Card title="Function state row" icon="toggle-on">
     A compact row showing the on/off state of DCC functions **F0 through F10** for the active throttle slot. An illuminated indicator means that function is currently on. Press any of the eleven function buttons to toggle them.
   </Card>
   <Card title="Battery icon" icon="battery-three-quarters">
-    Appears in the top-right corner when battery monitoring is enabled. Cycles between icon-only and icon-with-percentage modes by pressing **ShowHideBattery** (configured via Extras). Hidden when battery monitoring is disabled.
+    Appears in the top-right corner when battery monitoring is enabled. Cycles between icon-only and icon-with-percentage modes via the battery display option in Extras. Hidden when battery monitoring is disabled.
   </Card>
 </CardGroup>
 
@@ -42,7 +42,7 @@ When a throttle slot has no locomotive acquired, the address area displays **No 
 To start driving, you need to acquire a loco. With the throttle screen showing *No loco selected*, you can type a DCC address directly using the **F0–F9** keys as a numeric keypad and press **OK** (or the encoder button) to acquire it. Alternatively, press **Menu → 1 Add Loco** to pick a locomotive from the server roster.
 
 <Note>
-  Switching to a different throttle slot with **Next Throttle** (key `5` on the Direct Commands screen) lets you control a second or third locomotive independently without losing the one you already acquired.
+  Switching to a different throttle slot with **Next Throttle** (navigate to **5 NextThr** on the Direct Commands screen and press **OK**) lets you control a second or third locomotive independently without losing the one you already acquired.
 </Note>
 
 ## The footer hint bar

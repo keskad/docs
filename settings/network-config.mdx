@@ -1,10 +1,10 @@
 ---
-title: "Configure DHCP or Static IP for LongFred"
+title: "Configure DHCP or Static IP on Your LongFred Throttle"
 sidebarTitle: "Network"
 description: "Switch LongFred between automatic DHCP addressing and a fixed static IP, including subnet mask, gateway, and optional DNS configuration."
 ---
 
-By default, LongFred obtains its IP address automatically from your router or access point using DHCP. For most home and club layouts this works perfectly — just connect to your WiFi network and start running trains. If your layout uses fixed IP addresses, or you want to guarantee that LongFred always appears at the same address for troubleshooting, you can assign a static IP directly on the throttle. All network settings are persisted in NVS and take effect on the next WiFi connection.
+By default, LongFred obtains its IP address automatically from your router or access point using DHCP. For most home and club layouts this works perfectly — just connect to your WiFi network and start running trains. If your layout uses fixed IP addresses, or you want to guarantee that LongFred always appears at the same address for troubleshooting, you can assign a static IP directly on the throttle. All network settings are saved to non-volatile storage and take effect on the next WiFi connection.
 
 ## Why use a static IP?
 
@@ -48,7 +48,7 @@ Press **F0–F9** to type each digit. Press **OK** to confirm the current field 
     Type each octet as three digits using **F0–F9** — for example, `192`, `168`, `001`, `050` for `192.168.1.50`. Press **OK** to confirm and move to the next field.
   </Step>
   <Step title="Enter the subnet prefix length">
-    Type the prefix length as one or two digits — for example, `24` for a `/24` (255.255.255.0) network, or `16` for a `/16`. Press **OK** to advance.
+    Type the prefix length as one or two digits — for example, `24` for a `/24` (255.255.255.0) network, or `16` for a `/16`. The default is `24` if you leave this field empty. Press **OK** to advance.
   </Step>
   <Step title="Enter the gateway (optional)">
     Type the gateway IP using the same three-digit-per-octet format. If you leave this field empty and press **OK**, the gateway is auto-filled by replacing the last octet of your IP address with `1` — for example, `192.168.1.50` → gateway `192.168.1.1`.
@@ -57,7 +57,7 @@ Press **F0–F9** to type each digit. Press **OK** to confirm the current field 
     Type the DNS server IP, or leave blank and press **OK** to skip. If you are unsure, leaving DNS empty is fine for most WiThrottle layouts — DNS is only needed if LongFred needs to resolve hostnames.
   </Step>
   <Step title="Settings saved">
-    After the DNS field, LongFred saves all fields to NVS and returns to the Throttle screen. The new network configuration takes effect on the next WiFi connection.
+    After the DNS field, LongFred saves all fields to non-volatile storage and returns to the Throttle screen. The new network configuration takes effect on the next WiFi connection.
   </Step>
 </Steps>
 

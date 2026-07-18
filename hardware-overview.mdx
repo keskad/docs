@@ -1,14 +1,10 @@
 ---
 title: "LongFred Hardware: Buttons, Encoder, and Display"
 sidebarTitle: "Hardware"
-description: "A complete reference for LongFred's physical controls, OLED display, and GPIO wiring — covering the encoder, nav cluster, function buttons, and I2C peripherals."
+description: "Complete reference for LongFred's physical controls, OLED display, and GPIO wiring — encoder, nav cluster, function buttons, and I2C peripherals."
 ---
 
-LongFred runs on an **ESP32-C6-DevKitC-1U** development board paired with a small set of off-the-shelf modules. This page describes every physical control on the assembled throttle and maps each one to its GPIO pin or I2C expander bit. It is primarily aimed at makers and builders who are assembling or adapting the hardware, but it is also a useful reference for understanding what the buttons do while operating the throttle.
-
-<Note>
-  All pin assignments are defined in a single board support file in the firmware source. Adapting LongFred to a custom PCB means editing that one file — no other source files need to change.
-</Note>
+LongFred runs on an **ESP32-C6-DevKitC-1U** development board paired with a small set of off-the-shelf modules. This page describes every physical control on the assembled throttle and maps each one to its GPIO pin or I2C expander bit. It is useful both for understanding what the buttons do while operating the throttle and for builders assembling or adapting the hardware.
 
 ## Hardware Components at a Glance
 
@@ -45,7 +41,7 @@ The rotary encoder is the primary speed control. Its three signals connect direc
 |---|---|---|
 | Channel A (CLK) | **GPIO 2** | Quadrature A phase |
 | Channel B (DT) | **GPIO 3** | Quadrature B phase |
-| Push button | **GPIO 0** | Encoder button / EStop/Direction shortcut |
+| Push button | **GPIO 0** | Encoder button / speed-stop and direction shortcut |
 
 ### Encoder behaviour
 
@@ -57,8 +53,6 @@ The rotary encoder is the primary speed control. Its three signals connect direc
 
 <Accordion title="Pressing the encoder button — stop then toggle direction">
   Pressing the encoder button sends a speed-zero command to the active loco. If the loco is already stationary, the press toggles its direction (forward ↔ reverse). This gives you a single-handed "stop and reverse" gesture without reaching for the Direction button.
-
-  The firmware constant for this behaviour is `ENCODER_BUTTON_ACTION = SpeedStopThenToggleDirection`.
 </Accordion>
 
 ## Navigation Cluster
@@ -74,10 +68,6 @@ The navigation cluster consists of six buttons wired directly to ESP32-C6 GPIO p
 | **OK** | GPIO 22 | Confirm selection / acquire loco / save entry |
 | **Back** | GPIO 23 | Go back one screen level / delete last character |
 | **Menu** | GPIO 10 | Open the main menu from the Throttle screen |
-
-<Info>
-  **Menu** (GPIO 10) is technically separate from the directional cluster in the firmware, but it is typically placed adjacent to the nav buttons on the physical PCB for ergonomic reasons.
-</Info>
 
 ### Navigation cluster behaviour by screen
 
@@ -108,7 +98,7 @@ The eleven function buttons are routed through the two MCP23017 I/O expanders on
 | **F10** | Function 10 | MCP1 (`0x21`) | A | 2 |
 
 <Tip>
-  During password entry and numeric IP address entry, the **F0–F9** buttons double as digit keys (0–9), providing a much faster way to type numeric input than scrolling with the encoder.
+  During password entry and numeric IP address entry, the **F1–F9** buttons act as single-digit shortcuts (1–9). **F0** cycles through a space character and then the digit 0. This provides a much faster way to type numeric input than scrolling with the encoder.
 </Tip>
 
 ## Direction Button
@@ -162,13 +152,13 @@ All other screens use a 6-row grid. Row 0 is a title or status line; rows 1–4 
 
 ## Battery Monitoring
 
-LongFred samples battery voltage through the ADC on **GPIO 1**. The battery level can be displayed as an icon or as an icon with a percentage on the Throttle screen. Tapping a dedicated menu option cycles through the display modes (icon only → icon + percent → hidden).
+LongFred samples battery voltage through the ADC on **GPIO 1**. The battery level is displayed as an icon on the Throttle screen by default. Tapping a dedicated menu option cycles through the display modes (icon only → icon + percent → hidden).
 
 | Signal | GPIO |
 |---|---|
 | Battery ADC | **GPIO 1** |
 
-Deep sleep is triggered automatically when the battery voltage falls below a configurable threshold, or you can initiate sleep manually via **Menu → Extras → OFF / Sleep**.
+Deep sleep is triggered automatically when the battery voltage falls below a configurable threshold, or you can initiate sleep manually via **Menu → 9 Extras → 7 OFF / Sleep**.
 
 ## Complete Pin Reference
 
@@ -180,7 +170,7 @@ The table below consolidates every signal used by LongFred firmware for quick re
 | I2C SCL | GPIO 7 | Shared: OLED + 2× MCP23017 |
 | Encoder A (CLK) | GPIO 2 | Active-low, pull-up |
 | Encoder B (DT) | GPIO 3 | Active-low, pull-up |
-| Encoder button | GPIO 0 | Also LP GPIO0 deep-sleep wake pin |
+| Encoder button | GPIO 0 | Also deep-sleep wake pin |
 | Nav UP | GPIO 18 | Active-low, pull-up |
 | Nav DOWN | GPIO 19 | Active-low, pull-up |
 | Nav LEFT | GPIO 20 | Active-low, pull-up |
@@ -189,13 +179,12 @@ The table below consolidates every signal used by LongFred firmware for quick re
 | Nav BACK | GPIO 23 | Active-low, pull-up |
 | Menu | GPIO 10 | Active-low, pull-up |
 | Battery ADC | GPIO 1 | Voltage divider to battery |
-| MCP INT (unused) | GPIO 11 | Reserved, not used in firmware |
 | OLED | I2C `0x3C` | SSD1306 128×64 |
 | MCP23017 #0 | I2C `0x20` | EStop (A7), F0–F7 (B0–B7) |
 | MCP23017 #1 | I2C `0x21` | F8–F10 (A0–A2), Direction (A3) |
 
 <Note>
-  Avoid using GPIO 4, 5, 8, 9, and 15 for additional peripherals — these are ESP32-C6 strapping pins and may behave unexpectedly during boot or in simulation environments.
+  Avoid using GPIO 4, 5, 8, 9, and 15 for additional peripherals — these are ESP32-C6 strapping pins and may behave unexpectedly during boot.
 </Note>
 
 ## Next Steps

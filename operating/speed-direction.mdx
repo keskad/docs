@@ -1,10 +1,10 @@
 ---
-title: 'Controlling Speed and Direction with LongFred'
+title: 'Speed and Direction Control on the LongFred Throttle'
 sidebarTitle: 'Speed & Direction'
-description: 'How to use the rotary encoder, encoder button, and direction button to control loco speed (0–126) and direction, plus emergency stop and speed coalescing behaviour.'
+description: 'Use the rotary encoder to change speed (0-126), the encoder button for stop-then-reverse, and the direction switch to set Forward or Reverse.'
 ---
 
-LongFred controls locomotive speed and direction using its rotary encoder, encoder button, and dedicated direction button. Speed commands follow the DCC 128-step protocol, giving you 127 usable speed steps between stopped and full throttle. All speed and direction inputs only take effect when at least one loco is acquired on the current throttle slot.
+LongFred controls locomotive speed and direction using its rotary encoder, encoder button, and dedicated direction switch. Speed commands follow the DCC 128-step protocol, giving you 127 usable speed steps between stopped and full throttle. All speed and direction inputs only take effect when at least one loco is acquired on the current throttle slot.
 
 ## Rotary encoder — speed control
 
@@ -21,15 +21,15 @@ Each detent of the encoder changes speed by **4 steps** (the default `SPEED_STEP
 
 ### Speed step multiplier
 
-You can multiply the per-click step size by cycling through three levels. Access this from the throttle screen or from the Direct Commands screen:
+You can multiply the per-click step size by cycling through three levels. Access this from the **Menu → 4 X SpeedStep** or from the Direct Commands screen (navigate to the **6 SpdMult** item and press **OK**):
 
 | Level | Steps per click | How to reach |
 |-------|-----------------|--------------|
 | **1×** (default) | 4 | Default on startup |
-| **2×** | 8 | Press `6` on Direct Commands screen, or Menu → 4 |
-| **4×** | 16 | Press `6` again |
+| **2×** | 8 | Cycle once via Menu → 4 or Direct Commands |
+| **4×** | 16 | Cycle twice |
 
-Pressing once more cycles back to **1×**. The current multiplier is visible on the throttle screen speed display.
+Cycling once more returns to **1×**. The current multiplier is visible on the throttle screen speed display.
 
 <Tip>
   Use the 4× multiplier for quickly getting a loco up to a working speed, then drop back to 1× for fine control when coupling or shunting.
@@ -52,7 +52,7 @@ Speed values follow the DCC 128-step standard:
 
 When you turn the encoder quickly, LongFred **coalesces** rapid speed changes: instead of flooding the server with every intermediate step, only the final value within a **200 ms window** is transmitted. This keeps network traffic lean while still giving the server an up-to-date speed as soon as your hand slows down.
 
-**Stop (speed 0) is exempt from coalescing** — it is always sent immediately, making it safe-critical and instantaneous.
+**Stop (speed 0) is exempt from coalescing** — it is always sent immediately, making it safety-critical and instantaneous.
 
 ## Encoder button — stop then toggle direction
 
@@ -61,11 +61,11 @@ Pressing the encoder button has two behaviours depending on the current state of
 1. **Loco is moving** → sends a speed-0 command (immediate stop). The direction is not changed yet.
 2. **Loco is already stopped** → toggles the direction between Forward and Reverse.
 
-This two-step behaviour (`SpeedStopThenToggleDirection`) prevents accidental direction reversal while a loco is in motion.
+This two-step behaviour prevents accidental direction reversal while a loco is in motion.
 
-## Direction button
+## Direction switch
 
-The direction button immediately toggles between **Forward** and **Reverse** regardless of the current speed. This is intended for use when you have already stopped the loco and want a quick way to change direction without pressing the encoder button twice.
+The direction switch is a two-position hardware switch. Moving it to the **Forward** position sends a Forward command; moving it to the **Reverse** position sends a Reverse command. The switch always reflects the physical position — it does not toggle; it sets direction directly.
 
 <Warning>
   Sending a direction change while a loco is moving will cause the decoder to abruptly reverse on the track. Always stop the loco first for smooth operation.
@@ -73,7 +73,9 @@ The direction button immediately toggles between **Forward** and **Reverse** reg
 
 ## Emergency stop
 
-Pressing the **EStop** button (or key `8` on the Direct Commands screen) sends an emergency-stop command to every loco on **every active throttle slot** simultaneously. All locos stop immediately regardless of their current speed, and the displayed speed values reset to 0. Any pending speed commands are discarded.
+Pressing the dedicated **EStop** button sends an emergency-stop command to every loco on **every active throttle slot** simultaneously. All locos stop immediately regardless of their current speed, and the displayed speed values reset to 0. Any pending speed commands are discarded.
+
+The EStop action is also accessible from the Direct Commands screen: navigate to the **8 EStop** item and press **OK**.
 
 <Warning>
   EStop affects **all** throttle slots, not just the one you are currently viewing. Use it as a safety measure to halt the entire layout, not as a per-loco stop.
@@ -81,8 +83,8 @@ Pressing the **EStop** button (or key `8` on the Direct Commands screen) sends a
 
 ## Switching throttle slots
 
-To switch between active throttle slots, press key **5** on the Direct Commands screen (**5 NextThr**). LongFred advances to the next slot and wraps back to the first after the last active slot. The throttle screen immediately updates to show the speed, direction, and locos of the newly selected slot.
+To switch between active throttle slots, open the Direct Commands screen (press **OK** on the throttle screen when a loco is acquired) and navigate to **5 NextThr**, then press **OK**. LongFred advances to the next slot and wraps back to the first after the last active slot. The throttle screen immediately updates to show the speed, direction, and locos of the newly selected slot.
 
 <Accordion title="How many throttle slots are active?">
-  Two throttle slots are active by default. You can increase or decrease this number at any time from **Menu → Extras → 4 #Throttles +** or **5 #Throttles −**, up to a maximum of six slots. Reducing the count releases any locos on the slots being deactivated.
+  Two throttle slots are active by default. You can increase or decrease this number at any time from **Menu → Extras**, navigating to **4 #Throttles +** or **5 #Throttles −** and pressing **OK**, up to a maximum of six slots. Reducing the count releases any locos on the slots being deactivated.
 </Accordion>

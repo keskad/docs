@@ -1,5 +1,5 @@
 ---
-title: "Troubleshooting Common LongFred Issues"
+title: "LongFred Troubleshooting Guide: Common Issues and Fixes"
 sidebarTitle: "Troubleshooting"
 description: "Step-by-step fixes for WiFi failures, command station discovery problems, unresponsive locos, lost connections, and other common LongFred issues."
 ---
@@ -56,7 +56,7 @@ Most problems with LongFred fall into one of three categories: connectivity (WiF
     **Steps to fix:**
     1. Check track power first — it is the most common cause. Press **Menu → 8 (Trk Power)** to toggle power on. Many command stations default to power-off on startup.
     2. Confirm the locomotive address is correct. Use **Menu → 2 (Drop Loco)** and then **Menu → 1 (Add Loco)** to re-acquire the loco with the correct address.
-    3. Check whether EStop is latched. Press the dedicated **EStop** button (MCP0 Port A, bit 7) or use Direct Command **8** to clear it and restore normal speed control.
+    3. Check whether EStop is latched. Press the dedicated **EStop** button or use the **EStop** option on the Direct Commands screen to clear it and restore normal speed control.
     4. Listen for any DCC activity on the track using a DCC decoder tester or another throttle. If the track is live and other locos respond, the address mismatch is the most likely issue.
     5. If the command station reports the loco as "in use" by another device, see the *Loco acquired or stolen by another device* accordion below.
   </Accordion>
@@ -83,7 +83,7 @@ Most problems with LongFred fall into one of three categories: connectivity (WiF
     2. If the device does not reconnect on its own, press **Menu** and then **Back** to force a fresh connection attempt from the network screen.
     3. Check that the command station is still running and has not crashed or gone to sleep.
     4. If reconnections keep dropping, check the WiFi signal strength. Move LongFred closer to the access point or add a WiFi extender near the layout.
-    5. TCP keepalive is set to **5 seconds** with an **8-second** hard timeout. If your network introduces more latency than this (e.g. a congested 2.4 GHz channel), consider switching to a less crowded WiFi channel on the access point.
+    5. If your network introduces high latency (e.g. a congested 2.4 GHz channel), consider switching to a less crowded WiFi channel on the access point.
   </Accordion>
 
   <Accordion title="Loco acquired or stolen by another throttle">
@@ -95,30 +95,29 @@ Most problems with LongFred fall into one of three categories: connectivity (WiF
     1. LongFred is configured to **auto-steal** — it will attempt to take the loco from another throttle automatically. If the command station refuses the steal (some stations require explicit permission), you will need to release the loco on the other device first.
     2. On the other throttle or software client, drop/release the locomotive address that LongFred is trying to acquire.
     3. If you want to prevent accidental stealing, enable **1 Loco Mode** (Extras → 8) which limits operation to a single address and makes session ownership clearer.
-    4. Note that `DROP_BEFORE_ACQUIRE` is disabled by default: LongFred does not release its current loco before requesting a new one. If the command station has a loco limit, manually drop existing locos first via **Menu → 2 (Drop Loco)**.
+    4. By default, LongFred does not release its current loco before requesting a new one. If the command station has a loco limit, manually drop existing locos first via **Menu → 2 (Drop Loco)**.
   </Accordion>
 
   <Accordion title="Display shows the wrong language">
     **Symptoms:** All menu text and labels appear in an unexpected language after a firmware update or language change.
 
-    **Likely causes:** The language was changed via **Extras → 6 (Language)** and saved; or the firmware was flashed with a different default locale.
+    **Likely causes:** The language was changed via **Extras → Language** and saved; or the firmware was flashed with a different default locale.
 
     **Steps to fix:**
-    1. Press **Menu → 9 (Extras) → 6 (Language)** to open the language selector.
-    2. Cycle through the available languages by pressing the key shown on screen until you reach your preferred language.
-    3. The change takes effect immediately — no reboot is required.
-    4. Return to the throttle screen by pressing **Back** twice.
+    1. Press **Menu → 9 (Extras)**, then navigate to **Language** (display label: **6 Language**) and press **OK**.
+    2. Use **Up / Down** to highlight **0 English**, then press **OK** to confirm. The change takes effect immediately — no reboot is required.
+    3. Return to the throttle screen by pressing **Back** twice.
   </Accordion>
 
   <Accordion title="Battery icon is missing from the display">
     **Symptoms:** No battery level indicator appears on the throttle screen even though the device is running on battery power.
 
-    **Likely causes:** The firmware was compiled without the `USE_BATTERY_TEST` feature flag enabled. This is a build-time option and cannot be toggled at runtime.
+    **Likely causes:** The firmware was compiled without battery monitoring enabled. This is a build-time option and cannot be toggled at runtime.
 
     **Steps to fix:**
     1. Confirm whether your LongFred was built with battery monitoring enabled — check the product documentation or ask your supplier.
-    2. If you are building firmware yourself, enable the `USE_BATTERY_TEST` compile flag in your build configuration and re-flash the device.
-    3. Battery monitoring requires both the firmware flag **and** the appropriate hardware voltage-divider circuit on the board. If your board revision does not include the voltage divider, the icon will remain absent regardless of the flag.
+    2. If you are building firmware yourself, enable battery monitoring in your build configuration and re-flash the device.
+    3. Battery monitoring requires both the firmware build flag **and** the appropriate hardware voltage-divider circuit on the board. If your board revision does not include the voltage divider, the icon will remain absent regardless of the build settings.
     4. As a workaround, monitor battery life by observing WiFi connection stability — the device will start dropping connections as supply voltage falls below the minimum operating level.
   </Accordion>
 

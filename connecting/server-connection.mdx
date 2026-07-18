@@ -8,12 +8,12 @@ The moment LongFred has a WiFi connection and a valid IP address it starts looki
 
 ## Automatic mDNS discovery
 
-After WiFi connects, LongFred sends mDNS queries for two service types simultaneously:
+After WiFi connects, LongFred sends mDNS queries for two service types in sequence:
 
 - `_withrottle._tcp` — covers JMRI WiThrottle Server, DCC-EX, and any other WiThrottle-compatible software
 - `_z21._udp` — covers Roco Z21 base stations
 
-LongFred listens for responses for up to **10 seconds** (`MDNS_WAIT_MS = 10 000 ms`). All responding stations are collected and shown on the **Server List** screen, each tagged with the protocol they speak:
+LongFred listens for responses for up to **10 seconds** in total. All responding stations are collected and shown on the **Server List** screen, each tagged with the protocol they speak:
 
 | Tag | Protocol |
 |-----|----------|
@@ -28,7 +28,7 @@ Up to **five** discovered servers are shown at a time.
 
 ## Auto-connect to the first WiThrottle server
 
-LongFred is configured with `AUTO_CONNECT_TO_FIRST_WITHROTTLE_SERVER = true`, which means that as soon as mDNS returns at least one WiThrottle server, LongFred connects to the first one automatically. You land straight on the throttle screen without needing to press anything.
+LongFred is set to auto-connect: as soon as mDNS returns at least one WiThrottle server, LongFred connects to the first one automatically. You land straight on the throttle screen without needing to press anything.
 
 <Tip>
   If your layout has exactly one WiThrottle command station and nothing else, auto-connect means the entire startup sequence — power on, WiFi join, discovery, connect — completes hands-free.
@@ -73,7 +73,7 @@ If mDNS finds nothing, or you want to reach a server that doesn't advertise itse
 </Steps>
 
 <Info>
-  The IP and port are entered as a continuous string of digits — three digits per IP octet followed by five digits for the port (e.g. `192168004001002560` for `192.168.4.1:2560`). The display formats them with dots and a colon automatically so you can see the address clearly as you type.
+  The IP and port are entered as a continuous string of digits — three digits per IP octet followed by five digits for the port (e.g. `19216800400102560` for `192.168.4.1:2560`). The display formats them with dots and a colon automatically so you can see the address clearly as you type.
 </Info>
 
 ## Automatic reconnection

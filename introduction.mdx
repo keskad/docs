@@ -1,7 +1,7 @@
 ---
 title: "LongFred: WiFi DCC Throttle for Model Railways"
 sidebarTitle: "Introduction"
-description: "LongFred is an open-source WiFi DCC throttle built on the ESP32-C6, supporting WiThrottle and Z21 protocols to control your model railway layout wirelessly."
+description: "LongFred is a WiFi DCC throttle built on the ESP32-C6, supporting WiThrottle and Z21 protocols to control your model railway layout wirelessly."
 ---
 
 LongFred is a wireless DCC throttle controller that runs on an ESP32-C6 development board and connects to your model railway command station over WiFi. It gives you a physical, handheld control surface — rotary encoder, function buttons, navigation cluster, and an OLED display — without any cables between the throttle and the layout. Whether you run JMRI, DCC-EX, or a Roco Z21 system, LongFred speaks the right protocol and gets you driving trains within minutes of first boot.
@@ -34,7 +34,7 @@ When you reach the server selection screen, LongFred displays any servers it fin
     Run up to six independent throttles simultaneously, each able to control a consist of up to ten locos.
   </Card>
   <Card title="Physical Controls" icon="gamepad">
-    Rotary encoder for smooth speed control, dedicated F0–F10 function buttons, Direction button, and a latching EStop button.
+    Rotary encoder for smooth speed control, dedicated F0–F10 function buttons, Direction button, and a dedicated EStop button.
   </Card>
   <Card title="OLED Display" icon="display">
     128×64 SSD1306 OLED shows the throttle screen or a menu grid with speed, direction, consist, function states, and battery level.
@@ -52,11 +52,7 @@ When you reach the server selection screen, LongFred displays any servers it fin
 
 ## Compatible Hardware
 
-LongFred targets the **ESP32-C6-DevKitC-1U** board paired with an SSD1306 OLED display and two MCP23017 I/O expanders for the button matrix. All GPIO pin assignments are defined in a single board support file, making it straightforward to adapt the firmware to a custom PCB layout.
-
-<Note>
-  LongFred is open-source firmware. If you are building the hardware yourself, refer to the [Hardware Overview](/hardware-overview) page for the complete pin map and wiring guide.
-</Note>
+LongFred targets the **ESP32-C6-DevKitC-1U** board paired with an SSD1306 OLED display and two MCP23017 I/O expanders for the button matrix. Refer to the [Hardware Overview](/hardware-overview) page for the complete pin map and wiring guide.
 
 ## Ready to Get Going?
 

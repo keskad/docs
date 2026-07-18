@@ -20,14 +20,14 @@ x.y.z
 The top line is the device name (`LongFred` by default) and the second line is the firmware version. A `booting...` status message appears at the bottom while the firmware initialises NVS storage and the network stack. The splash screen clears automatically after a moment and advances to the next screen.
 
 <Info>
-  The device name shown on the splash screen is also the WiThrottle client name that JMRI and DCC-EX will see when LongFred connects. You can change it later via **Menu → Extras → Device**.
+  The device name shown on the splash screen is also the WiThrottle client name that JMRI and DCC-EX will see when LongFred connects. You can change it later via **Menu → 9 Extras → 2 Device**.
 </Info>
 
 ### Select a WiFi Network — SSID List
 
-After the splash screen, LongFred scans for nearby WiFi networks and presents the **SSID list screen**. Discovered networks are numbered `0`–`9`. Use the **Up / Down** buttons on the navigation cluster to move the cursor, then press **OK** to choose a network.
+After the splash screen, LongFred scans for nearby WiFi networks and presents the **SSID list screen**. Up to five discovered networks are shown per page, numbered `0`–`4`. Use the **Up / Down** buttons on the navigation cluster to move the cursor, then press **OK** to choose a network.
 
-- Press **Right** (or the **OK** button when no network is highlighted) to trigger a fresh scan if your network did not appear.
+- Press **Right** to trigger a fresh scan if your network did not appear. Use **Right** to page through results and **Left** to go back a page.
 - If you previously saved credentials for a network, LongFred will remember the password and skip the password entry screen on subsequent connections.
 
 <Tip>
@@ -44,7 +44,7 @@ The on-screen hint reads:
 Nav/F0-9  OK Save  Back
 ```
 
-This means you can also use the **F0–F9** function buttons as digit shortcuts (0–9) while typing a numeric password, which is often faster than scrolling with the encoder.
+This means you can also use the **F1–F9** function buttons as single-digit shortcuts (1–9) while typing a numeric password, which is often faster than scrolling with the encoder. **F0** cycles through a space and the digit 0.
 
 <Note>
   The password you enter is saved in NVS storage. The next time you connect to the same SSID, this screen is skipped entirely.
@@ -86,13 +86,13 @@ After a successful server connection, the **Throttle screen** appears. It displa
 
 The hint bar at the bottom reads `Menu OK Fn  EStop`, reminding you of the main controls available from this screen.
 
-To acquire a locomotive, type its DCC address using the **F0–F9** buttons (for example, press **F0**, **F4**, **F2** to enter address `042`). The address appears on screen as you type. Press **OK** (the centre button of the navigation cluster) to acquire the loco on the current throttle slot.
+To acquire a locomotive, type its DCC address using the **F0–F9** buttons (for example, press **F0** twice to enter a `0`, then **F4** for `4`, then **F2** for `2` to enter address `042`). The address appears on screen as you type. Press **OK** (the centre button of the navigation cluster) to acquire the loco on the current throttle slot.
 
 - For a **short address** (less than 128), just type the number — LongFred selects the address format automatically.
 - For a **long address** of 128 or above, type the number as normal; addresses ≥ 128 are automatically treated as long addresses.
 
 <Info>
-  LongFred supports consists of up to 10 locos per throttle slot. To add more locos to a slot, open the menu (**Menu** button) and choose **Add Loco**. To release all locos from the current slot, choose **Drop Loco**.
+  LongFred supports consists of up to 10 locos per throttle slot. To add more locos to a slot, open the menu (**Menu** button) and choose **1 Add Loco**. To release all locos from the current slot, choose **2 Drop Loco**.
 </Info>
 
 ### Drive Your Loco
@@ -112,11 +112,11 @@ With a loco acquired, the throttle is live:
   The **EStop button** sends an emergency stop command that affects every loco on every throttle slot, not just the one you are currently driving. Use it only when you need to stop all activity on the layout immediately.
 </Warning>
 
-Speed increases in steps of 4 (with a 3× multiplier available via **Menu → X SpeedStep**). Turning the encoder clockwise decreases speed by default; this can be changed in firmware configuration if you prefer the opposite direction.
+Speed increases in steps of 4, up to a maximum of 126. Turning the encoder **counter-clockwise increases** speed; turning **clockwise decreases** it. A 3× speed multiplier is available via **Menu → 4 X SpeedStep** for fast traversal of the speed range.
 
 ### Save Your Session (Optional)
 
-To save the currently acquired locos so LongFred can restore them automatically on the next connection, open **Menu → Extras → Save Locos**. Saved loco addresses are stored in NVS flash alongside your WiFi credentials and will be re-acquired automatically when you reconnect to the same server.
+To save the currently acquired locos so LongFred can restore them automatically on the next connection, open **Menu → 9 Extras → 9 Save Locos**. Saved loco addresses are stored in NVS flash alongside your WiFi credentials and will be re-acquired automatically when you reconnect to the same server.
 
 </Steps>
 

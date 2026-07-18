@@ -1,5 +1,5 @@
 ---
-title: "LongFred Button and Control Reference Map"
+title: "LongFred Physical Controls and Button Reference Guide"
 sidebarTitle: "Button Map"
 description: "Complete reference for every physical control on LongFred: nav cluster, rotary encoder, function buttons, direction, EStop, and speed settings."
 ---
@@ -21,10 +21,10 @@ The navigation cluster and encoder handle all menu interaction, throttle selecti
 | **Menu** | GPIO 10 | Open the main menu from any throttle screen |
 | **Encoder – rotate CCW** | GPIO 2 (A), GPIO 3 (B) | **Increase** speed (counter-clockwise increases by default) |
 | **Encoder – rotate CW** | GPIO 2 (A), GPIO 3 (B) | Decrease speed |
-| **Encoder – press** | GPIO 0 | Speed stop, then toggle direction (SpeedStopThenToggleDirection) |
+| **Encoder – press** | GPIO 0 | Stop the active loco, then toggle its direction |
 
 <Note>
-The encoder button (GPIO 0) doubles as the **wake pin**: pressing it wakes LongFred from sleep mode. The first press wakes the device; subsequent presses apply the SpeedStopThenToggleDirection action.
+The encoder button (GPIO 0) doubles as the **wake pin**: pressing it wakes LongFred from sleep mode. The first press wakes the device; subsequent presses apply the stop-then-toggle-direction action.
 </Note>
 
 ## Function Buttons, Direction, and EStop
@@ -52,7 +52,7 @@ The default DCC function mapping is a direct one-to-one pass-through: F0 → DCC
 </Info>
 
 <Note>
-When `TOGGLE_DIRECTION_WHEN_STATIONARY` is active (the default), the Direction button will only toggle direction while the loco is at a standstill. If the loco is moving, press EStop or bring speed to zero first.
+When the direction-lock-while-moving feature is active (the default), the Direction button will only toggle direction while the loco is at a standstill. If the loco is moving, press EStop or bring speed to zero first.
 </Note>
 
 ## Speed Settings
@@ -61,9 +61,8 @@ These firmware constants govern how speed changes are applied when you turn the 
 
 | Parameter | Value | Meaning |
 |---|---|---|
-| **SPEED_STEP** | 4 | Speed units added or subtracted per encoder detent |
-| **SPEED_STEP_MULTIPLIER** | 3 | Multiplier applied when the fast-step modifier is held (step becomes 4 × 3 = 12) |
-| **Speed Multiplier levels** | 1×, 2×, 4× | Three stages toggled via the Speed Multiplier command (1× = normal, 2× = double step, 4× = quadruple step) |
+| **Base speed step** | 4 | Speed units added or subtracted per encoder detent at the normal (1×) multiplier level |
+| **Speed multiplier levels** | 1×, 2×, 4× | Three stages cycled by the Speed Multiplier command; effective steps per detent are 4, 8, and 16 respectively |
 | **MAX_SPEED** | 126 | Maximum DCC speed step value transmitted to the command station |
 
 <Tip>

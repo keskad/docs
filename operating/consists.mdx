@@ -1,7 +1,7 @@
 ---
-title: 'Running Multiple Locos as a Consist on LongFred'
+title: 'Building and Running a Consist on LongFred (Up to 10 Locos)'
 sidebarTitle: 'Consists'
-description: 'Build and control a consist of up to 10 locos on one throttle slot, set individual facing directions, and understand how functions are routed across the consist.'
+description: 'Build and control a consist of up to 10 locos on one LongFred throttle slot, set facing directions, and understand how functions are routed.'
 ---
 
 A **consist** is a group of two or more locomotives assigned to the same throttle slot so that they respond to speed and direction commands together, just like a prototype multiple-unit set or a pair of back-to-back diesels. LongFred manages consists at the WiThrottle protocol level — the command station server handles the actual DCC packet routing, while LongFred tracks which locos belong together and sends the appropriate commands to each one.
@@ -18,7 +18,7 @@ Each throttle slot holds an ordered list of loco addresses. The **first** addres
 
 <Steps>
   <Step title="Ensure drop-before-acquire is off">
-    The default setting is **off**, which means acquiring a new loco adds it to the slot without releasing the existing one. Confirm this by checking **Menu → Extras → 8 1 Loco Tgl** — if the mode is already off, no change is needed. If it is on, press **8** to toggle it off.
+    The default setting is **off**, which means acquiring a new loco adds it to the slot without releasing the existing one. Confirm this by checking **Menu → Extras**, then navigate to **8 1 Loco Tgl** — if the mode is already off, no change is needed. If it is on, press **OK** to toggle it off.
   </Step>
   <Step title="Acquire the lead loco">
     With the target throttle slot showing **No loco selected**, acquire the first locomotive by address or from the roster as normal. This becomes the lead loco for the consist.
@@ -27,7 +27,7 @@ Each throttle slot holds an ordered list of loco addresses. The **first** addres
     Acquire each successive locomotive on the same slot. Because drop-before-acquire is off, each new address is appended to the consist list rather than replacing the previous one. The throttle screen address area shows all acquired addresses side by side.
   </Step>
   <Step title="Drive the consist">
-    Turn the encoder to set speed or press direction controls. All locos in the consist respond simultaneously. Up to **10 locos** can be added to a single throttle slot.
+    Turn the encoder to set speed or use direction controls. All locos in the consist respond simultaneously. Up to **10 locos** can be added to a single throttle slot.
   </Step>
 </Steps>
 

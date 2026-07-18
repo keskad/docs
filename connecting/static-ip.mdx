@@ -89,7 +89,7 @@ Enter the IP address of a DNS resolver, or leave blank and press **OK** if name 
 
 ## Saving and applying the configuration
 
-Settings are written to **non-volatile storage (NVS)** and survive power cycles. The new configuration does **not** take effect on the current connection — it is applied on the next connection attempt. To activate immediately, return to the SSID List screen (via Menu → disconnect or by rebooting LongFred) and reconnect to your network.
+Settings are written to **non-volatile storage (NVS)** and survive power cycles. The new configuration is also applied to the live network stack immediately — no reboot is required. If LongFred is already connected to WiFi, the IP change takes effect straight away.
 
 <Warning>
   If you enter a static IP that conflicts with another device on the network — or one that is outside the subnet of the access point — LongFred will connect to WiFi successfully but will not be able to reach the command station. Double-check that your chosen address is within the same subnet as the access point and is not already in use.

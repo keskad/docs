@@ -1,10 +1,10 @@
 ---
-title: "LongFred Menu and Extras Command Reference"
+title: "LongFred Menu, Extras, and Direct Commands Reference"
 sidebarTitle: "Menu Commands"
 description: "Full listing of every LongFred menu command, Extras sub-menu option, and direct throttle-screen shortcut, with instructions for navigation."
 ---
 
-LongFred organises its commands into two layers: the **Main Menu**, which you open from any throttle screen by pressing the **Menu** button, and the **Extras sub-menu**, which is item 9 inside the Main Menu. In addition, a set of **Direct Commands** is available from the throttle screen itself — you press a digit key without opening the menu at all. This page lists every option in all three layers.
+LongFred organises its commands into two layers: the **Main Menu**, which you open from any throttle screen by pressing the **Menu** button, and the **Extras sub-menu**, which is item 9 inside the Main Menu. In addition, a **Direct Commands** screen is available from the throttle screen itself — press **OK** while a loco is active to open it without going through the menu. This page lists every option in all three layers.
 
 ## How to Navigate the Menus
 
@@ -12,8 +12,8 @@ LongFred organises its commands into two layers: the **Main Menu**, which you op
   <Step title="Open the Main Menu">
     Press the **Menu** button (GPIO 10) from the throttle screen. The display switches to the menu list.
   </Step>
-  <Step title="Select a command by digit">
-    Press the **digit key** (F0–F9 correspond to digits 0–9) that matches the command number shown on screen. The command executes immediately, or a sub-screen opens if further input is needed.
+  <Step title="Select a command">
+    Use the **Up / Down** buttons to move the highlight to the command you want, or press the **function key** (F0–F9, corresponding to digits 0–9) that matches the item number shown on screen to jump directly to that item. Then press **OK** to execute the command or open any required sub-screen.
   </Step>
   <Step title="Return or cancel">
     Press **Back** at any time to cancel the current action and return to the previous screen. From the Main Menu, Back returns you to the throttle screen without executing any command.
@@ -21,12 +21,12 @@ LongFred organises its commands into two layers: the **Main Menu**, which you op
 </Steps>
 
 <Note>
-Menu items are zero-indexed: the first item in each menu is **0**, not 1. Press the **0** key (F0 button) to select the first item.
+Menu items are zero-indexed: the first item in each menu is **0**, not 1. The **0** key (F0 button) or the Up/Down cursor can select the first item.
 </Note>
 
-## Main Menu (Menu button → digit 0–9)
+## Main Menu (Menu button → select 0–9 → OK)
 
-| Key | Command | What it does |
+| Item | Command | What it does |
 |---|---|---|
 | **0** | Function | Toggle a DCC function on the active loco; prompts for a function number |
 | **1** | Add Loco | Acquire a new locomotive address onto the current throttle slot |
@@ -43,22 +43,22 @@ Menu items are zero-indexed: the first item in each menu is **0**, not 1. Press 
 **Trk Power** (item 8) is the quickest way to restore motion when all locos are stationary unexpectedly — it toggles the track power state without needing to know loco addresses.
 </Tip>
 
-## Extras Sub-Menu (Main Menu → 9 → digit 0–9)
+## Extras Sub-Menu (Main Menu → 9 → Up/Down → OK)
 
-The Extras sub-menu contains device configuration and session management options.
+The Extras sub-menu contains device configuration and session management options. Use **Up / Down** to highlight an item, then press **OK** to activate it.
 
-| Key | Command | What it does |
+| Display label | Command | What it does |
 |---|---|---|
-| **0** | Fnc/Key Tgl | Toggle between function-key mode and key-definition mode for the F buttons |
-| **1** | Net Config | Open the network configuration screen to set SSID, password, server IP, and port |
-| **2** | Device | Show device information (firmware version, MAC address, etc.) |
-| **3** | Heartbt Tgl | Enable or disable the periodic WiThrottle heartbeat (default period: 10 s) |
-| **4** | #Throttles + | Increase the number of active throttle slots (up to a maximum of 6) |
-| **5** | #Throttles – | Decrease the number of active throttle slots (minimum 1) |
-| **6** | Language | Cycle through available UI languages |
-| **7** | OFF / Sleep | Put the device to sleep; press the encoder button (GPIO 0) to wake |
-| **8** | 1 Loco Tgl | Toggle single-loco mode, which constrains operation to one locomotive at a time |
-| **9** | Save Locos | Persist the current locomotive roster (addresses and names) to flash storage |
+| **0 Fnc/Key Tgl** | Fnc/Key Tgl | Toggle between showing the Direct Commands screen or the Function List when you press OK on the throttle screen |
+| **1 Net Config** | Net Config | Open the network configuration screen to set SSID, password, server IP, and port |
+| **2 Device** | Device | Show device information (firmware version, MAC address, etc.) |
+| **3 Heartbt Tgl** | Heartbt Tgl | Enable or disable the periodic WiThrottle heartbeat (default period: 10 s) |
+| **4 #Throttles +** | #Throttles + | Increase the number of active throttle slots (up to a maximum of 6) |
+| **5 #Throttles –** | #Throttles – | Decrease the number of active throttle slots (minimum 1) |
+| **6 Language** | Language | Cycle through available UI languages |
+| **7 OFF / Sleep** | OFF / Sleep | Put the device to sleep; press the encoder button (GPIO 0) to wake |
+| **8 1 Loco Tgl** | 1 Loco Tgl | Toggle single-loco mode, which constrains operation to one locomotive at a time |
+| **9 Save Locos** | Save Locos | Persist the current locomotive roster (addresses and names) to flash storage |
 
 <Warning>
 Pressing **OFF / Sleep** (Extras → 7) immediately suspends the display and radio. Any running locomotive will continue at its last commanded speed — set all locos to zero before sleeping if the layout is unattended.
@@ -68,23 +68,23 @@ Pressing **OFF / Sleep** (Extras → 7) immediately suspends the display and rad
 The default number of throttle slots is **2**. Use **#Throttles +** and **#Throttles –** to adjust between 1 and 6 slots. Changes take effect immediately but are lost on reboot unless you also run **Save Locos**.
 </Info>
 
-## Direct Commands (Throttle Screen Shortcuts)
+## Direct Commands (Throttle Screen → OK)
 
-When **Hash Shows Functions** mode is off (the default), pressing a digit key directly on the throttle screen — without opening the menu — triggers a shortcut command. These are designed for the most frequently needed actions during a running session.
+When a loco is active on the throttle screen, pressing **OK** opens the Direct Commands screen. Use **Up / Down** to highlight the action you want, then press **OK** again to execute it. This screen is designed for the most frequently needed actions during a running session.
 
-| Key | Direct Command | What it does |
+| Display label | Action | What it does |
 |---|---|---|
-| **0** | F0 | Toggle DCC function F0 on the active loco (typically headlights) |
-| **1** | F1 | Toggle DCC function F1 on the active loco |
-| **2** | F2 | Toggle DCC function F2 on the active loco |
-| **3** | F3 | Toggle DCC function F3 on the active loco |
-| **4** | F4 | Toggle DCC function F4 on the active loco |
-| **5** | Next Throttle | Advance focus to the next throttle slot |
-| **6** | Speed Multiplier | Cycle the encoder speed-step multiplier (1× → 2× → 4× → 1×) |
-| **7** | Reverse | Toggle forward/reverse direction on the active loco |
-| **8** | EStop | Issue an emergency stop to the active loco (speed set to 0 immediately) |
-| **\*** | Back | Return to the previous screen / cancel any pending input |
+| **0-4 Function** | Function | Toggle DCC function F0 on the active loco (typically headlights) |
+| **5 NextThr** | Next Throttle | Advance focus to the next throttle slot |
+| **6 SpdMult** | Speed Multiplier | Cycle the encoder speed-step multiplier (1× → 2× → 4× → 1×) |
+| **7 Rev** | Reverse | Set the active loco's direction to reverse |
+| **8 EStop** | EStop | Issue an emergency stop to the active loco (speed set to 0 immediately) |
+| **\* back** | Back | Return to the throttle screen without executing a command |
+
+<Note>
+The numbers shown in the **Display label** column are informational labels that appear on screen — they reflect the key assignments shown in the interface. Navigation on the Direct Commands screen is always by Up/Down and OK.
+</Note>
 
 <Tip>
-Direct Commands mean you can toggle headlights (**0**), call EStop (**8**), and switch between throttle slots (**5**) without ever opening the menu — keeping your eyes on the layout.
+If you want Function List access instead of Direct Commands when pressing OK on the throttle screen, toggle the mode via **Extras → 0 (Fnc/Key Tgl)**.
 </Tip>

@@ -1,14 +1,14 @@
 ---
-title: 'Controlling DCC Track Power from LongFred'
+title: 'Controlling DCC Track Power On and Off with LongFred'
 sidebarTitle: 'Track Power'
-description: 'Toggle, turn on, or turn off the DCC booster output that energises your rails and powers your locomotives, directly from LongFred.'
+description: 'Toggle DCC track power on or off from LongFred with a single menu press, and monitor the live power state on the throttle screen at all times.'
 ---
 
 Track power is the DCC booster output that energises the rails, providing both the control signal and the traction power that your locomotives need to run. Without track power on, decoders receive no signal and trains cannot move. LongFred lets you toggle track power on or off directly from the menu, and it always shows you the current power state on the throttle screen so you know at a glance whether the track is live.
 
 ## Viewing Track Power State
 
-The throttle screen displays a **power indicator** (`power_on`) at all times. When track power is on the indicator is lit; when power is off or the state is unknown it is shown accordingly. Because track power state is broadcast by the server to every connected client, the indicator updates automatically whenever any throttle or the command station itself changes the power state — you don't need to do anything to refresh it.
+The throttle screen displays a **power indicator** at all times. When track power is on the indicator is lit; when power is off or the state is unknown it is shown accordingly. Because track power state is broadcast by the server to every connected client, the indicator updates automatically whenever any throttle or the command station itself changes the power state — you don't need to do anything to refresh it.
 
 <Note>
   Track power state is a global, server-broadcast value. If another throttle
@@ -96,7 +96,7 @@ LongFred sends the appropriate command for your connected protocol:
 <Accordion title="Can I turn power on or off without toggling?">
   The menu command (`8 Trk Power`) always toggles. If you need explicit
   on/off control — for example, from a hardware button assignment — the
-  firmware supports dedicated `PowerOn` and `PowerOff` actions that can be
+  firmware supports dedicated power-on and power-off actions that can be
   mapped to physical buttons in the button configuration. Speak to your
   firmware maintainer to enable this.
 </Accordion>
