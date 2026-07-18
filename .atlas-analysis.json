@@ -1,0 +1,100 @@
+{
+  "projectType": "general",
+  "projectName": "LongFred",
+  "projectDescription": "LongFred is a WiFi-based wireless DCC throttle controller for model railway layouts, built on the ESP32-C6 and compatible with WiThrottle and Z21 command stations.",
+  "theme": "almond",
+  "primaryColor": "#2563EB",
+  "lightColor": "#DBEAFE",
+  "darkColor": "#1E3A5F",
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "User Guide",
+        "groups": [
+          {
+            "group": "Get Started",
+            "pages": [
+              "introduction",
+              "quickstart",
+              "hardware-overview"
+            ]
+          },
+          {
+            "group": "Connecting",
+            "pages": [
+              "connecting/wifi-setup",
+              "connecting/server-connection",
+              "connecting/static-ip"
+            ]
+          },
+          {
+            "group": "Operating",
+            "pages": [
+              "operating/throttle-screen",
+              "operating/acquiring-locos",
+              "operating/speed-direction",
+              "operating/functions",
+              "operating/consists"
+            ]
+          },
+          {
+            "group": "Layout Control",
+            "pages": [
+              "layout/turnouts",
+              "layout/routes",
+              "layout/track-power"
+            ]
+          },
+          {
+            "group": "Settings",
+            "pages": [
+              "settings/device-settings",
+              "settings/network-config",
+              "settings/language",
+              "settings/power-sleep"
+            ]
+          },
+          {
+            "group": "Reference",
+            "pages": [
+              "reference/button-map",
+              "reference/menu-commands",
+              "reference/troubleshooting"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "keyFeatures": [
+    "Wireless DCC control over WiFi (WiThrottle and Z21 protocols)",
+    "Multi-throttle support — up to 6 simultaneous throttle slots",
+    "Up to 10 locos per consist per throttle slot",
+    "11 DCC function buttons (F0–F10) with customisable key mappings",
+    "Rotary encoder for smooth speed control",
+    "OLED display with real-time throttle status",
+    "Turnout and route control",
+    "mDNS auto-discovery of command stations on the local network",
+    "Battery level monitoring with icon display",
+    "Inactivity deep-sleep power saving",
+    "NVS persistent storage: WiFi credentials, saved locos, device name/ID",
+    "Multilingual UI (English, Polish, German)",
+    "Static IP / DHCP network configuration",
+    "Emergency stop (EStop) button"
+  ],
+  "publicApiSurface": [
+    "WiThrottle protocol commands: add loco, release throttle, set speed, set direction, EStop, set function, track power, turnout, route, steal",
+    "Z21 protocol support",
+    "mDNS server auto-discovery (service type _withrottle._tcp)",
+    "Menu: Function, Add Loco, Drop Loco, Toggle Direction, Speed Multiplier, Throw Turnout, Close Turnout, Route, Track Power, Extras",
+    "Extras menu: Net Config, Device, Language, Function/Key Toggle, Heartbeat Toggle, Throttle Count +/-, Sleep, 1-Loco Toggle, Save Locos",
+    "Rotary encoder: speed up/down, encoder button action (configurable: stop then toggle direction)",
+    "Nav cluster buttons: Up, Down, Left, Right, OK, Back, Menu",
+    "F0–F10 function buttons",
+    "Direction button",
+    "EStop button",
+    "NVS persistence: SavePassword, SaveLocos, SaveNetwork, SaveDevice, RegenerateDeviceId, SaveLanguage, Clear",
+    "Device settings: name (up to 32 chars), 4-digit numeric ID",
+    "Network config: DHCP or static IP/mask/gateway/DNS"
+  ]
+}

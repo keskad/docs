@@ -1,0 +1,99 @@
+---
+title: "Battery Monitoring and Sleep Mode on LongFred"
+sidebarTitle: "Power & Sleep"
+description: "Understand LongFred's battery indicator, deep sleep options, automatic sleep thresholds, the WiThrottle heartbeat, and how to save loco acquisitions to NVS."
+---
+
+LongFred runs on battery power and includes several features designed to extend runtime and protect your session. The throttle screen can display a live battery level icon, and the device can enter deep sleep automatically or on demand to conserve power when not in use. A built-in WiThrottle heartbeat keeps your server connection alive, and a dedicated save action lets you preserve your current locomotive acquisitions across power cycles.
+
+## Battery indicator
+
+The battery level is shown as an icon in the corner of the throttle screen. LongFred samples the battery voltage through the ADC every **10 seconds**, averaging 20 readings for a stable result. You can cycle through three display modes by pressing the **ShowHideBattery** action button:
+
+<CardGroup cols={2}>
+  <Card title="None" icon="eye-slash">
+    The battery icon is hidden. Useful if you prefer a cleaner screen and know your battery is healthy.
+  </Card>
+  <Card title="Icon" icon="battery-half">
+    A battery icon is shown on the throttle screen, representing the current charge level graphically.
+  </Card>
+  <Card title="Icon + Percent" icon="battery-full">
+    The battery icon is shown alongside a numeric percentage, e.g. `78%`. The most informative mode.
+  </Card>
+</CardGroup>
+
+Press **ShowHideBattery** repeatedly to cycle through **None → Icon → Icon + Percent → None →** …
+
+<Note>
+  The battery display mode is session-only and resets to the firmware default on reboot. The default mode is set at compile time (`USE_BATTERY_PERCENT_WITH_ICON`). Contact your firmware provider if you want to change the default.
+</Note>
+
+## Sleep modes
+
+LongFred supports three ways to enter **deep sleep**, a low-power state that shuts down the WiFi radio and processor core:
+
+<Accordion title="Manual sleep (Extras → 7 OFF / Sleep)">
+  The most common way to put LongFred to sleep. Navigate to **Extras** from the main menu and press **7 OFF / Sleep**. A warning screen appears for **2 seconds**, giving you time to cancel by pressing Back. After the countdown, the device enters deep sleep.
+
+  To wake the device, press the **encoder button** (GPIO0). LongFred will reboot, reconnect to WiFi, and restore your saved locos if any were saved.
+</Accordion>
+
+<Accordion title="Auto-sleep on inactivity (disabled by default)">
+  LongFred can enter deep sleep automatically after a configurable period of inactivity — defined as having no active WiThrottle server connection. This is controlled by the `AUTO_SLEEP_INACTIVITY_MS` compile-time constant, which defaults to `0` (disabled).
+
+  If your firmware has this enabled, the same 2-second warning screen appears before sleep triggers.
+
+  <Info>
+    Auto-sleep on inactivity is a **compile-time setting** and cannot be changed from the UI. Contact your firmware provider if you need to enable or adjust the inactivity timeout.
+  </Info>
+</Accordion>
+
+<Accordion title="Auto-sleep on low battery (disabled by default)">
+  LongFred can also enter deep sleep when the battery percentage drops below a set threshold. This is controlled by the `USE_BATTERY_SLEEP_AT_PERCENT` compile-time constant, which defaults to `0` (disabled).
+
+  When triggered, the display shows the "Battery low" message for 2 seconds before entering deep sleep.
+
+  <Info>
+    The low-battery sleep threshold is a **compile-time setting** and cannot be changed from the UI. Contact your firmware provider if you need to enable or adjust this threshold.
+  </Info>
+</Accordion>
+
+## Waking from deep sleep
+
+Press the **encoder button** (the push-action on the rotary encoder, wired to GPIO0) to wake LongFred from deep sleep. The device performs a full reboot — it reconnects to WiFi, rediscovers your WiThrottle server, and automatically reacquires any locos that were saved before sleeping.
+
+<Warning>
+  Deep sleep is a **full power-off state**. Any locomotive acquisitions that were not saved (see below) will be lost. Use **Extras → 9 Save Locos** before sleeping if you want them restored on wake.
+</Warning>
+
+## WiThrottle heartbeat
+
+The WiThrottle protocol requires a periodic keepalive message to prevent the server from dropping idle clients. LongFred sends this heartbeat automatically in the background. You can toggle it on or off during a session:
+
+- Navigate to **Extras → 3 Heartbt Tgl**
+- Each press toggles the heartbeat between enabled and disabled
+- The current heartbeat state is visible as a small indicator on the throttle screen
+
+<Note>
+  Disabling the heartbeat is intended for advanced users and debugging. Most WiThrottle servers (including JMRI and DCC-EX) will disconnect a client that stops sending keepalives after a short timeout. Re-enable the heartbeat with another press of **3 Heartbt Tgl** if you lose your server connection.
+</Note>
+
+## Saving locomotive acquisitions
+
+When LongFred reconnects to a WiThrottle server after a reboot or sleep cycle, it can automatically re-acquire the locomotives you had previously selected. This requires saving the current acquisitions to NVS first.
+
+<Steps>
+  <Step title="Open the Extras menu">
+    From the **Throttle** screen, open the main menu and navigate to **Extras**.
+  </Step>
+  <Step title="Save locos">
+    Press **9 Save Locos**. LongFred writes the current loco acquisitions (up to 12 slots) to NVS immediately. A brief confirmation message appears on screen.
+  </Step>
+  <Step title="Reconnect or wake">
+    After the next reboot, WiFi reconnect, or wake from deep sleep, LongFred reads the saved acquisitions and automatically reacquires them from the server.
+  </Step>
+</Steps>
+
+<Tip>
+  Make it a habit to press **9 Save Locos** before putting LongFred to sleep or walking away from the layout. Up to 12 locomotive acquisitions across all throttle slots can be saved in a single action.
+</Tip>

@@ -1,0 +1,139 @@
+---
+title: 'Activating Layout Routes from LongFred'
+sidebarTitle: 'Routes'
+description: 'Trigger preset sequences of turnout positions from LongFred to set a complete, named path through your layout with a single command.'
+---
+
+A route is a preset configuration stored on your command station that sets a group of turnouts to pre-defined positions all at once, establishing a complete path through your layout in one step. Rather than throwing each turnout individually, you activate a single route and the server handles the rest. LongFred lets you activate routes either by entering the route address directly, or by browsing the route list published by your command station.
+
+## How Routes Work
+
+LongFred sends an activation command to the server; the server then executes the route logic itself. LongFred does not directly move the turnouts — it delegates that work to the command station (JMRI, DCC-EX, or a compatible WiThrottle server). This means the server must have the routes defined and enabled before LongFred can activate them.
+
+<Info>
+  Routes are a server-side feature. LongFred's role is to send the activation
+  command; the command station carries out the sequence. If a route does not
+  appear to work, verify it is correctly configured and active on the server.
+</Info>
+
+---
+
+## Method 1 — Activate a Route by Address
+
+Use this method when you know the numeric address of the route and want to trigger it immediately.
+
+<Steps>
+  <Step title="Open the menu">
+    Press the **Menu** button from the throttle screen.
+  </Step>
+  <Step title="Select Route">
+    Press **7** for **Route**.
+  </Step>
+  <Step title="Enter the route address">
+    Type the route address digits on the keypad (for example, `4`, `2` for
+    address 42).
+  </Step>
+  <Step title="Confirm">
+    Press **OK**. LongFred builds the system name from your configured route
+    prefix and the digits you entered, then dispatches the activation command
+    to the server.
+  </Step>
+</Steps>
+
+### System Name Format
+
+LongFred constructs the WiThrottle system name by concatenating the **route prefix** with the address digits you entered:
+
+```
+system name = route_prefix + address_digits
+```
+
+With the default prefix of `IO:AUTO:`, entering address `42` sends system name **`IO:AUTO:42`** to the server. Your command station resolves this to the corresponding route.
+
+<Info>
+  The route prefix is set in the firmware network configuration
+  (`route_prefix`). The factory default is `IO:AUTO:`, which matches the JMRI
+  Logix/LogixNG auto-generated route naming convention. If your command
+  station uses a different scheme, the firmware must be recompiled with the
+  appropriate prefix.
+</Info>
+
+---
+
+## Method 2 — Select from the Route List
+
+If your command station has published a named route list, you can browse it directly on LongFred and activate any entry by name.
+
+<Steps>
+  <Step title="Open the menu">
+    Press the **Menu** button from the throttle screen.
+  </Step>
+  <Step title="Select Route">
+    Press **7** for **Route**. If the server has provided a route list,
+    LongFred opens the **RouteList** screen.
+  </Step>
+  <Step title="Navigate the list">
+    The list shows up to **10 entries per page**, each identified by a digit
+    (0–9) and the user-friendly name from the server. Use **Nav Up / Nav Down**
+    to move the cursor, or press the digit key next to the entry you want.
+  </Step>
+  <Step title="Change page">
+    Press **Nav Right** to advance to the next page of routes.
+  </Step>
+  <Step title="Activate">
+    Press **OK** (or the digit key for the highlighted entry). LongFred sends
+    the activation command using the system name stored in the list entry.
+  </Step>
+  <Step title="Go back">
+    Press **Back** at any time to return to the previous screen without
+    activating anything.
+  </Step>
+</Steps>
+
+<Note>
+  The route list is populated by the command station when LongFred connects.
+  If the list is empty, the server has not published any routes over
+  WiThrottle — use the address-entry method instead, or check that routes are
+  enabled for WiThrottle sharing in your server software (for example, in
+  JMRI's WiThrottle preferences).
+</Note>
+
+---
+
+## Route States
+
+The server may report a route's current state. LongFred reflects this where available:
+
+<CardGroup cols={2}>
+  <Card title="Active" icon="circle-check">
+    All turnouts in the route are in the expected positions.
+  </Card>
+  <Card title="Inactive" icon="circle-xmark">
+    The route is defined but not currently set.
+  </Card>
+  <Card title="Inconsistent" icon="triangle-exclamation">
+    Some turnouts in the route are not in the expected position.
+  </Card>
+  <Card title="Unknown" icon="circle-question">
+    The server cannot determine the current state of the route.
+  </Card>
+</CardGroup>
+
+---
+
+## Quick Reference
+
+<CardGroup cols={2}>
+  <Card title="Activate by address" icon="keyboard">
+    Menu → **7 Route** → enter digits → **OK**
+  </Card>
+  <Card title="Activate from list" icon="list">
+    Menu → **7 Route** → navigate RouteList → **OK**
+  </Card>
+</CardGroup>
+
+<Tip>
+  If you use a small set of routes regularly, note their addresses and use the
+  direct address method for the fastest possible activation — three key
+  presses and you're done.
+</Tip>

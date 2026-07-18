@@ -1,0 +1,91 @@
+---
+title: "Set Your LongFred Device Name and ID"
+sidebarTitle: "Device"
+description: "Personalise your LongFred throttle by setting a unique device name and numeric ID used in every WiThrottle handshake with your command station."
+---
+
+Every LongFred throttle announces itself to a WiThrottle server — such as JMRI or DCC-EX — using two pieces of identity: a human-readable name and a short numeric ID. Setting a meaningful name makes it easy to tell your throttles apart in the JMRI Throttle Manager or DCC-EX console, especially when several LongFred devices share the same layout. The ID is auto-generated on first boot from a hardware random-number generator, so no two devices will clash out of the box — but you can regenerate or manually set it whenever you like.
+
+## What the settings do
+
+<CardGroup cols={2}>
+  <Card title="Device Name" icon="tag">
+    Up to 32 characters. Sent to the server as `N{name}` during the WiThrottle handshake. Defaults to `LongFred` on a fresh device. Change it to something like `Cab-1` or your name to identify the throttle at a glance.
+  </Card>
+  <Card title="Device ID" icon="fingerprint">
+    A four-digit number between 1000 and 9999. Sent as `HU{id}` in the WiThrottle handshake. Auto-generated from the hardware RNG on first boot. Regenerate it any time if you need a fresh value — useful when adding a second or third LongFred to a layout.
+  </Card>
+</CardGroup>
+
+<Note>
+  Both the name and ID are stored in non-volatile storage (NVS) and survive power cycles. They are restored automatically every time the throttle boots.
+</Note>
+
+## Navigating to Device settings
+
+From the **Throttle** screen, open the main menu and navigate to **Extras**, then select **2 Device**. The Device screen shows your current name and ID, and offers three actions at the bottom:
+
+| Key | Action |
+|-----|--------|
+| `0` | Edit device name |
+| `1` | Edit device ID |
+| `2` | Generate a new random ID |
+
+## Editing the device name
+
+<Steps>
+  <Step title="Open the name editor">
+    On the Device screen, press **0**. The name editor opens pre-filled with your current device name.
+  </Step>
+  <Step title="Navigate the character set">
+    Use the **Nav Up** and **Nav Down** controls (the rotary encoder) to cycle through the full character set. The currently highlighted character is shown as a blinking cursor in the preview line.
+  </Step>
+  <Step title="Use F0–F9 multi-tap (optional)">
+    Like a classic phone keypad, each function key cycles through a group of letters. Press the same key repeatedly to reach the character you want, then press **OK** (encoder button) to commit it and advance the cursor.
+  </Step>
+  <Step title="Delete characters">
+    Press **Back** to delete the last committed character.
+  </Step>
+  <Step title="Save the name">
+    When the name looks right in the preview, press **OK** to save. The new name is written to NVS immediately and takes effect for the next server connection.
+  </Step>
+</Steps>
+
+<Tip>
+  Keep the name short enough to read on the server's client list at a glance. Names up to 12–16 characters work well on most JMRI screens.
+</Tip>
+
+## Editing the device ID
+
+<Steps>
+  <Step title="Open the ID editor">
+    On the Device screen, press **1**. The ID editor opens showing the current four-digit ID.
+  </Step>
+  <Step title="Enter digits">
+    Press **F0–F9** to type each digit. The display shows the digits you have entered so far.
+  </Step>
+  <Step title="Save the ID">
+    Press **OK** to confirm. The ID is saved to NVS immediately. The new ID is used the next time LongFred connects to a WiThrottle server.
+  </Step>
+</Steps>
+
+## Regenerating the device ID
+
+If you receive a new LongFred or need to resolve an ID conflict without typing a specific number, use the automatic regeneration option.
+
+<Steps>
+  <Step title="Open the Device screen">
+    Navigate to **Extras → 2 Device**.
+  </Step>
+  <Step title="Regenerate">
+    Press **2 New ID**. The firmware calls the hardware RNG, maps the result to the 1000–9999 range, and immediately saves the new ID to NVS. The updated ID appears on screen straight away.
+  </Step>
+</Steps>
+
+<Info>
+  The hardware RNG produces a different value every time, so repeated presses of **2 New ID** always yield a fresh number. The range 1000–9999 gives 9000 possible IDs — more than enough for any layout.
+</Info>
+
+## WiFi hostname
+
+Alongside the device name and ID, LongFred also has a **WiFi hostname** (used as the DHCP client hostname on your network). It is generated automatically on first boot in the form `longred_xxxxxxx`, where the suffix is a six-character alphanumeric string derived from the hardware RNG. The hostname is shown in the device info screen and is used by your router to identify the throttle on the network. It cannot be changed from the UI.

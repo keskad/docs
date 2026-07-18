@@ -1,47 +1,132 @@
 ---
-title: "Quickstart"
-description: "Begin with a guide on the fastest path to a successful outcome"
+title: "Get Started with LongFred in Minutes"
+sidebarTitle: "Quick Start"
+description: "Follow these steps to power on your LongFred throttle, join your WiFi network, connect to a DCC command station, and drive your first locomotive."
 ---
 
-Describe how someone begins using your product. What is the first thing they need to do? Are there any prerequisites?
-
-A quickstart should take someone from zero to using your product. They'll get a quick win and a sense of what they can accomplish.
-
-## Prerequisites
-
-Before you begin, you must have:
-
-- Requirement one (for example, Node.js 18+, a free account, an API key)
-- Requirement two (for example, a compatible device, a compatible browser, a compatible operating system)
-
-## Get started
+LongFred is designed to get you from cold boot to moving trains as quickly as possible. The first-run flow walks you through WiFi selection, password entry, and server connection in a sequence of simple screens — each with a one-line hint at the bottom of the OLED display telling you which controls to use. Work through the steps below the first time you power on a fresh device.
 
 <Steps>
-  <Step title="Install">
-    Describe how to install your product or sign up.
 
-    ```bash
-    npm install your-package
-    ```
-  </Step>
-  <Step title="Configure">
-    Describe any setup or configuration needed before first use.
+### Power On — Splash Screen
 
-    ```bash
-    your-cli init
-    ```
-  </Step>
-  <Step title="Run it">
-    Show the first thing a user does to see it working.
+Apply power to your ESP32-C6 board. The OLED display lights up with the **splash screen**, which shows two lines:
 
-    ```bash
-    your-cli start
-    ```
-  </Step>
-</Steps>
+```
+LongFred
+x.y.z
+```
+
+The top line is the device name (`LongFred` by default) and the second line is the firmware version. A `booting...` status message appears at the bottom while the firmware initialises NVS storage and the network stack. The splash screen clears automatically after a moment and advances to the next screen.
+
+<Info>
+  The device name shown on the splash screen is also the WiThrottle client name that JMRI and DCC-EX will see when LongFred connects. You can change it later via **Menu → Extras → Device**.
+</Info>
+
+### Select a WiFi Network — SSID List
+
+After the splash screen, LongFred scans for nearby WiFi networks and presents the **SSID list screen**. Discovered networks are numbered `0`–`9`. Use the **Up / Down** buttons on the navigation cluster to move the cursor, then press **OK** to choose a network.
+
+- Press **Right** (or the **OK** button when no network is highlighted) to trigger a fresh scan if your network did not appear.
+- If you previously saved credentials for a network, LongFred will remember the password and skip the password entry screen on subsequent connections.
 
 <Tip>
-  Give people a way to get help. This could be a link to a support page, a chat with a customer support agent, or a forum for your product.
-
-  Example: Need help? Reach out to us at [support@yourcompany.com](mailto:support@yourcompany.com).
+  LongFred stores up to 8 sets of WiFi credentials in non-volatile storage, so switching between home, club, and exhibition layouts is seamless after the first connection to each.
 </Tip>
+
+### Enter Your WiFi Password
+
+When you select a network that has no saved password, the **password entry screen** opens. The rotary encoder scrolls through characters; pressing **OK** confirms the highlighted character and appends it to the password. Press **Back** to delete the last character. When the full password is entered, press **OK** one final time to save and connect.
+
+The on-screen hint reads:
+
+```
+Nav/F0-9  OK Save  Back
+```
+
+This means you can also use the **F0–F9** function buttons as digit shortcuts (0–9) while typing a numeric password, which is often faster than scrolling with the encoder.
+
+<Note>
+  The password you enter is saved in NVS storage. The next time you connect to the same SSID, this screen is skipped entirely.
+</Note>
+
+### Wait for Connection
+
+LongFred displays the **Connecting** screen with your chosen SSID name while it associates with the access point. The timeout is 10 seconds. If the connection fails (wrong password or the AP is out of range), you are returned to the SSID list to try again.
+
+### Select a Command Station — Server List
+
+Once WiFi is up, LongFred listens for up to 10 seconds for mDNS service announcements. Any discovered WiThrottle or Z21 servers appear as a numbered list. Each entry shows the server label and a protocol tag (`W` for WiThrottle, `Z` for Z21).
+
+- Use **Up / Down** to highlight a server and press **OK** to connect.
+- Press **Right** to skip discovery and enter a server address manually.
+
+**Entering a server address manually:** pressing **Right** opens the **protocol selection screen** (choose WiThrottle or Z21), then the **server entry screen**. The address field is pre-filled with the protocol's default:
+
+| Protocol | Default address |
+|---|---|
+| WiThrottle | `192.168.4.1:2560` |
+| Z21 | `192.168.0.111:21105` |
+
+Use the rotary encoder or **F0–F9** buttons to edit the digits. Press **OK** to confirm and connect.
+
+<Tip>
+  If you run DCC-EX in access-point mode (the default), your command station creates a WiFi network and listens on `192.168.4.1:2560`. Simply connect LongFred to that network and LongFred will connect automatically via the WiThrottle default address.
+</Tip>
+
+### Throttle Screen — Acquire a Locomotive
+
+After a successful server connection, the **Throttle screen** appears. It displays:
+
+```
+[slot number]  [speed]  [direction]
+[consist / address]
+[hint bar]
+```
+
+The hint bar at the bottom reads `Menu OK Fn  EStop`, reminding you of the main controls available from this screen.
+
+To acquire a locomotive, type its DCC address using the **F0–F9** buttons (for example, press **F0**, **F4**, **F2** to enter address `042`). The address appears on screen as you type. Press **OK** (the centre button of the navigation cluster) to acquire the loco on the current throttle slot.
+
+- For a **short address** (less than 128), just type the number — LongFred selects the address format automatically.
+- For a **long address** of 128 or above, type the number as normal; addresses ≥ 128 are automatically treated as long addresses.
+
+<Info>
+  LongFred supports consists of up to 10 locos per throttle slot. To add more locos to a slot, open the menu (**Menu** button) and choose **Add Loco**. To release all locos from the current slot, choose **Drop Loco**.
+</Info>
+
+### Drive Your Loco
+
+With a loco acquired, the throttle is live:
+
+| Control | Action |
+|---|---|
+| **Rotary encoder** (turn) | Increase or decrease speed |
+| **Direction button** | Toggle forward / reverse |
+| **EStop button** | Emergency stop — halts all locos on all throttle slots immediately |
+| **F0–F10 buttons** | Toggle DCC functions 0–10 (F0 is typically the headlight) |
+| **Menu button** | Open the main menu |
+| **Back button** | Go back one screen level |
+
+<Warning>
+  The **EStop button** sends an emergency stop command that affects every loco on every throttle slot, not just the one you are currently driving. Use it only when you need to stop all activity on the layout immediately.
+</Warning>
+
+Speed increases in steps of 4 (with a 3× multiplier available via **Menu → X SpeedStep**). Turning the encoder clockwise decreases speed by default; this can be changed in firmware configuration if you prefer the opposite direction.
+
+### Save Your Session (Optional)
+
+To save the currently acquired locos so LongFred can restore them automatically on the next connection, open **Menu → Extras → Save Locos**. Saved loco addresses are stored in NVS flash alongside your WiFi credentials and will be re-acquired automatically when you reconnect to the same server.
+
+</Steps>
+
+## What's Next?
+
+<CardGroup cols={2}>
+  <Card title="Hardware Overview" icon="microchip" href="/hardware-overview">
+    Learn what every button and GPIO pin does — essential reading if you are assembling your own LongFred hardware.
+  </Card>
+  <Card title="Introduction" icon="book-open" href="/introduction">
+    Revisit the feature overview, supported protocols, and compatible command stations.
+  </Card>
+</CardGroup>

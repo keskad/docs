@@ -1,0 +1,76 @@
+---
+title: 'Running Multiple Locos as a Consist on LongFred'
+sidebarTitle: 'Consists'
+description: 'Build and control a consist of up to 10 locos on one throttle slot, set individual facing directions, and understand how functions are routed across the consist.'
+---
+
+A **consist** is a group of two or more locomotives assigned to the same throttle slot so that they respond to speed and direction commands together, just like a prototype multiple-unit set or a pair of back-to-back diesels. LongFred manages consists at the WiThrottle protocol level — the command station server handles the actual DCC packet routing, while LongFred tracks which locos belong together and sends the appropriate commands to each one.
+
+## How consists work on LongFred
+
+Each throttle slot holds an ordered list of loco addresses. The **first** address in the list is the **lead loco**; every address added after it is a **trailing loco**. When you turn the encoder or press a function button, LongFred sends the command to the whole slot — the server relays it to every loco in the list.
+
+<Info>
+  LongFred uses the WiThrottle multi-throttle (MTA) protocol for consist management. The server maintains the actual consist grouping; LongFred tells it which addresses to add or remove from a given throttle slot.
+</Info>
+
+## Building a consist
+
+<Steps>
+  <Step title="Ensure drop-before-acquire is off">
+    The default setting is **off**, which means acquiring a new loco adds it to the slot without releasing the existing one. Confirm this by checking **Menu → Extras → 8 1 Loco Tgl** — if the mode is already off, no change is needed. If it is on, press **8** to toggle it off.
+  </Step>
+  <Step title="Acquire the lead loco">
+    With the target throttle slot showing **No loco selected**, acquire the first locomotive by address or from the roster as normal. This becomes the lead loco for the consist.
+  </Step>
+  <Step title="Acquire each additional loco">
+    Acquire each successive locomotive on the same slot. Because drop-before-acquire is off, each new address is appended to the consist list rather than replacing the previous one. The throttle screen address area shows all acquired addresses side by side.
+  </Step>
+  <Step title="Drive the consist">
+    Turn the encoder to set speed or press direction controls. All locos in the consist respond simultaneously. Up to **10 locos** can be added to a single throttle slot.
+  </Step>
+</Steps>
+
+<Warning>
+  Make sure drop-before-acquire is **disabled** before building a consist. If it is enabled, acquiring a second loco will release the first one instead of adding it to the slot.
+</Warning>
+
+## Facing direction per loco
+
+Each locomotive in a consist has its own **facing direction** — either facing the same way as the lead loco (Forward relative to the consist) or facing the opposite way (Reverse relative to the consist). This matters for reverse-facing locos, such as those in a push-pull consist or a back-to-back lash-up.
+
+When you issue a direction command on the throttle:
+
+- The **lead loco** always receives the commanded direction exactly.
+- Each **trailing loco** receives either the same direction or the opposite, depending on how it is configured relative to the lead.
+
+This means all locos physically move in the correct direction even if some decoders are installed the other way around in their shells.
+
+<Accordion title="How do I set a loco's facing direction?">
+  Facing direction is set per-loco at the server level. When a loco is added to a consist through LongFred, the server's consist management assigns its facing direction based on its roster configuration or the direction command it last received. Consult your command station's documentation for how to configure individual loco orientation within a WiThrottle consist.
+</Accordion>
+
+## Function routing in a consist
+
+<CardGroup cols={2}>
+  <Card title="F0 — all locos" icon="broadcast-tower">
+    Pressing **F0** (typically the headlight) sends the command to **every loco** in the consist at once, so all headlights switch on or off together regardless of consist size.
+  </Card>
+  <Card title="F1–F31 — lead loco only" icon="train-front">
+    All other function buttons target only the **lead loco**. If you want to trigger a sound or light on a trailing loco, you must either switch to a separate throttle slot where that loco is acquired individually, or re-order the consist so the loco you want to control is in the lead position.
+  </Card>
+</CardGroup>
+
+## Releasing a consist
+
+Press **Menu → 2 Drop Loco** to release **all locos** on the current throttle slot at once. LongFred sends a single release command covering the entire slot, clearing every address from the consist and resetting the slot speed to zero.
+
+There is no built-in way to release a single loco from the middle of a consist while keeping the others. To split a consist you must drop all locos and then re-acquire only the ones you want to keep.
+
+## Consist size limit
+
+Each throttle slot supports a maximum of **10 locos**. Attempting to add an eleventh loco to a full slot will have no effect. The consist size limit is enforced locally by LongFred firmware before any command is sent to the server.
+
+<Note>
+  The total number of locos across all slots is limited only by the slot count (up to 6 slots × 10 locos = up to 60 locos total), but in practice the server and layout complexity will be the more relevant constraint.
+</Note>

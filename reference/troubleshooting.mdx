@@ -1,0 +1,125 @@
+---
+title: "Troubleshooting Common LongFred Issues"
+sidebarTitle: "Troubleshooting"
+description: "Step-by-step fixes for WiFi failures, command station discovery problems, unresponsive locos, lost connections, and other common LongFred issues."
+---
+
+Most problems with LongFred fall into one of three categories: connectivity (WiFi or command station), locomotive control (loco not responding, wrong direction, EStop latched), or device configuration (wrong language, battery icon missing, stolen loco). Work through the relevant accordion below and follow the steps in order — the most common cause is always listed first.
+
+<AccordionGroup>
+
+  <Accordion title="Cannot connect to WiFi / SSID not found">
+    **Symptoms:** LongFred scans for networks but your SSID does not appear, or the connection attempt times out after roughly 10 seconds.
+
+    **Likely causes:** Incorrect password stored from a previous session; the access point is out of range or not broadcasting its SSID; the 2.4 GHz band is not enabled on the router.
+
+    **Steps to fix:**
+    1. On the SSID scan screen, locate your network name and select it.
+    2. When prompted for the password, re-enter it carefully — saved passwords persist across reboots and a single wrong character will cause every connection attempt to fail silently until you correct it.
+    3. If your SSID does not appear in the scan list, confirm the access point is powered on and within range. Hidden SSIDs will not appear in the scan; use **Net Config** (Extras → 1) to enter the SSID name manually.
+    4. Make sure the access point is broadcasting on the **2.4 GHz** band. LongFred does not support 5 GHz.
+    5. If the connection still times out, move LongFred closer to the access point and try again. The SSID scan timeout is 10 seconds; if the router responds slowly it may need a second attempt.
+  </Accordion>
+
+  <Accordion title="Command station not found after connecting to WiFi">
+    **Symptoms:** LongFred joins the WiFi network successfully but then reports that no WiThrottle or Z21 server could be found, and the throttle screen remains inactive.
+
+    **Likely causes:** mDNS/Bonjour discovery is not working on your network; the command station software is not running; the server address or port differs from the LongFred default.
+
+    **Steps to fix:**
+    1. Confirm the command station software (JMRI, DCC-EX, Roco Z21 app, etc.) is running and that the WiThrottle or Z21 server is started within that software.
+    2. LongFred waits up to **10 seconds** for an mDNS advertisement. If your router or network switch blocks mDNS (common on managed/business routers), discovery will always fail — skip to manual entry.
+    3. Open **Net Config** (Extras → 1) and enter the command station's IP address and port manually.
+       - Default WiThrottle address: **192.168.4.1**, port **2560**
+       - Default Z21 address: **192.168.0.111**, port **21105**
+    4. Verify that the command station is on the **same subnet** as LongFred. Cross-subnet mDNS and TCP connections will not work without additional network configuration.
+    5. Temporarily disable any firewall on the computer running the command station and retry.
+  </Accordion>
+
+  <Accordion title="mDNS discovery finds the wrong server or does not discover any server">
+    **Symptoms:** LongFred connects to WiFi and waits the full 10-second mDNS window but announces it cannot find the server, or it connects to a different server than expected.
+
+    **Likely causes:** Multiple mDNS responders on the network (e.g. two instances of JMRI); the router does not forward mDNS between wireless and wired segments.
+
+    **Steps to fix:**
+    1. If more than one command station is advertising on the network, LongFred may pick the wrong one. Stop all other WiThrottle or Z21 servers on the network.
+    2. Enter the correct IP address and port manually via **Net Config** (Extras → 1) to bypass mDNS entirely.
+    3. On a mesh or multi-AP network, make sure multicast/mDNS passthrough is enabled in the router settings.
+    4. Restart both the command station and LongFred after making network changes.
+  </Accordion>
+
+  <Accordion title="Locomotive does not move or respond to speed commands">
+    **Symptoms:** You have acquired a loco address and can see the throttle screen, but turning the encoder or pressing EStop has no visible effect on the layout.
+
+    **Likely causes:** Track power is off; the loco DCC address entered does not match the decoder; EStop is latched; the command station has not acknowledged the loco acquisition.
+
+    **Steps to fix:**
+    1. Check track power first — it is the most common cause. Press **Menu → 8 (Trk Power)** to toggle power on. Many command stations default to power-off on startup.
+    2. Confirm the locomotive address is correct. Use **Menu → 2 (Drop Loco)** and then **Menu → 1 (Add Loco)** to re-acquire the loco with the correct address.
+    3. Check whether EStop is latched. Press the dedicated **EStop** button (MCP0 Port A, bit 7) or use Direct Command **8** to clear it and restore normal speed control.
+    4. Listen for any DCC activity on the track using a DCC decoder tester or another throttle. If the track is live and other locos respond, the address mismatch is the most likely issue.
+    5. If the command station reports the loco as "in use" by another device, see the *Loco acquired or stolen by another device* accordion below.
+  </Accordion>
+
+  <Accordion title="Track power is off and locos are stationary">
+    **Symptoms:** All locomotives are stationary; the command station indicates track power is off.
+
+    **Likely causes:** The command station started with power off; a short circuit tripped the over-current protection; another throttle or JMRI panel turned power off.
+
+    **Steps to fix:**
+    1. Press **Menu → 8 (Trk Power)** on LongFred to toggle track power on.
+    2. If power turns on and then immediately trips off again, inspect the track for a short circuit — derailed rolling stock, a dirty point blade, or a bridge wire touching the wrong rail.
+    3. In JMRI, check the Throttle or Power Manager panel and confirm global power is set to **On**.
+    4. After clearing any short, press **Menu → 8** again to restore power.
+  </Accordion>
+
+  <Accordion title="Lost WiThrottle connection mid-session">
+    **Symptoms:** The display shows a connection-lost indicator; locomotive control is unresponsive; LongFred may attempt to reconnect automatically.
+
+    **Likely causes:** WiFi signal dropped momentarily; the command station restarted; the WiThrottle TCP session timed out.
+
+    **Steps to fix:**
+    1. LongFred will attempt to reconnect automatically. The reconnect delay starts at **500 ms** and backs off to a maximum of **5 seconds** between retries — wait up to 15–20 seconds before intervening.
+    2. If the device does not reconnect on its own, press **Menu** and then **Back** to force a fresh connection attempt from the network screen.
+    3. Check that the command station is still running and has not crashed or gone to sleep.
+    4. If reconnections keep dropping, check the WiFi signal strength. Move LongFred closer to the access point or add a WiFi extender near the layout.
+    5. TCP keepalive is set to **5 seconds** with an **8-second** hard timeout. If your network introduces more latency than this (e.g. a congested 2.4 GHz channel), consider switching to a less crowded WiFi channel on the access point.
+  </Accordion>
+
+  <Accordion title="Loco acquired or stolen by another throttle">
+    **Symptoms:** When you try to add a loco, the command station reports the address is already in use by another device; alternatively, another device takes control of a loco you are already running.
+
+    **Likely causes:** The same locomotive address is held by a second physical or software throttle; LongFred's steal/share behaviour depends on command station settings.
+
+    **Steps to fix:**
+    1. LongFred is configured to **auto-steal** — it will attempt to take the loco from another throttle automatically. If the command station refuses the steal (some stations require explicit permission), you will need to release the loco on the other device first.
+    2. On the other throttle or software client, drop/release the locomotive address that LongFred is trying to acquire.
+    3. If you want to prevent accidental stealing, enable **1 Loco Mode** (Extras → 8) which limits operation to a single address and makes session ownership clearer.
+    4. Note that `DROP_BEFORE_ACQUIRE` is disabled by default: LongFred does not release its current loco before requesting a new one. If the command station has a loco limit, manually drop existing locos first via **Menu → 2 (Drop Loco)**.
+  </Accordion>
+
+  <Accordion title="Display shows the wrong language">
+    **Symptoms:** All menu text and labels appear in an unexpected language after a firmware update or language change.
+
+    **Likely causes:** The language was changed via **Extras → 6 (Language)** and saved; or the firmware was flashed with a different default locale.
+
+    **Steps to fix:**
+    1. Press **Menu → 9 (Extras) → 6 (Language)** to open the language selector.
+    2. Cycle through the available languages by pressing the key shown on screen until you reach your preferred language.
+    3. The change takes effect immediately — no reboot is required.
+    4. Return to the throttle screen by pressing **Back** twice.
+  </Accordion>
+
+  <Accordion title="Battery icon is missing from the display">
+    **Symptoms:** No battery level indicator appears on the throttle screen even though the device is running on battery power.
+
+    **Likely causes:** The firmware was compiled without the `USE_BATTERY_TEST` feature flag enabled. This is a build-time option and cannot be toggled at runtime.
+
+    **Steps to fix:**
+    1. Confirm whether your LongFred was built with battery monitoring enabled — check the product documentation or ask your supplier.
+    2. If you are building firmware yourself, enable the `USE_BATTERY_TEST` compile flag in your build configuration and re-flash the device.
+    3. Battery monitoring requires both the firmware flag **and** the appropriate hardware voltage-divider circuit on the board. If your board revision does not include the voltage divider, the icon will remain absent regardless of the flag.
+    4. As a workaround, monitor battery life by observing WiFi connection stability — the device will start dropping connections as supply voltage falls below the minimum operating level.
+  </Accordion>
+
+</AccordionGroup>

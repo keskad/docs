@@ -1,0 +1,83 @@
+---
+title: 'Acquire and Release Locos on LongFred'
+sidebarTitle: 'Acquiring Locos'
+description: 'How to add locos to a throttle slot by DCC address or from the server roster, release them, and what happens when LongFred reconnects to the server.'
+---
+
+Before LongFred can send speed or function commands to a locomotive, you must **acquire** it — that is, assign it to the current throttle slot. You can do this in two ways: by typing the DCC address directly on the throttle screen, or by selecting an entry from the server roster. Once you are finished, you can **release** the loco to free the slot for another locomotive.
+
+## Acquiring by DCC address
+
+<Steps>
+  <Step title="Go to the throttle screen with no loco">
+    Make sure the active slot shows **No loco selected**. If a loco is already acquired, release it first (see below) or switch to an empty slot with **Next Throttle**.
+  </Step>
+  <Step title="Type the DCC address">
+    Use the **F0–F9** buttons as a numeric keypad — F0 enters `0`, F1 enters `1`, and so on up to F9 for `9`. Each key press appends a digit to the address being entered. The display shows `addr:` followed by what you have typed so far.
+
+    You can also turn the rotary encoder up or down to cycle through digits when the cursor is on the address field.
+  </Step>
+  <Step title="Confirm to acquire">
+    Press **OK** or the **encoder button** to send the acquire command to the server. LongFred converts the number you typed to the correct DCC address format automatically:
+
+    - **1–127** → treated as a **short address** (e.g. entering `42` acquires `S42`)
+    - **128 and above** → treated as a **long address** (e.g. entering `3452` acquires `L3452`)
+
+    You do not need to specify the address length — LongFred determines it from the number itself.
+  </Step>
+</Steps>
+
+<Tip>
+  If you make a mistake while typing, press **Back** to clear the address field and start again.
+</Tip>
+
+## Acquiring from the server roster
+
+<Steps>
+  <Step title="Open the menu">
+    Press **Menu** from the throttle screen.
+  </Step>
+  <Step title="Select Add Loco">
+    Press **1** (or navigate to **1 Add Loco** and press **OK**). LongFred opens the roster list, which is populated from the connected server.
+  </Step>
+  <Step title="Navigate and select">
+    Use the encoder or the navigation keys to move through the roster. Press **OK** to acquire the highlighted locomotive. If the server has more entries than fit on one page, press the page-forward key to scroll through the list.
+  </Step>
+</Steps>
+
+## Releasing locos
+
+To release all locos from the current throttle slot, press **Menu → 2 Drop Loco**. LongFred sends a release command to the server for every locomotive on the slot and clears the consist. The speed is reset to zero before the locos are released.
+
+<Warning>
+  **Drop Loco** releases **all** locos on the current slot at once. If you have built a consist on that slot, every loco in the consist will be dropped together.
+</Warning>
+
+## Drop-before-acquire mode
+
+By default, acquiring a new loco **adds** it to the current throttle slot without dropping any existing locomotive. This is the correct behaviour for building a consist (see [Consists](/operating/consists)).
+
+If you prefer that acquiring a new address automatically releases whatever is already on the slot first, you can enable **drop-before-acquire** mode:
+
+1. Press **Menu → 9 Extras**
+2. Press **8** (shown as **8 1 Loco Tgl**) to toggle the mode on or off.
+
+When this mode is active, the acquire flow sends a release command for the current slot before adding the new address.
+
+## Loco steal
+
+If the address you are trying to acquire is already controlled by another throttle — either on LongFred or on another device connected to the same server — the server sends back a **steal request** asking for confirmation.
+
+LongFred **automatically confirms the steal**, so the loco is transferred to your throttle slot immediately without any additional button press on your part. The previous controller loses access to that address.
+
+## Saved locos and reconnect restore
+
+LongFred saves the list of acquired locos to non-volatile storage whenever you use **Menu → Extras → 9 Save Locos** (or when the device shuts down gracefully). On the next connection to the same server, LongFred automatically re-acquires those locos, restoring your session exactly as you left it.
+
+<Info>
+  Loco restore runs immediately after the server connection is established. You will see the address(es) appear in the throttle screen shortly after connecting, with no manual steps required.
+</Info>
+
+<Accordion title="What if I connect to a different server?">
+  The saved loco list is restored regardless of which server you connect to. If the new server does not recognise an address, the acquire command will simply have no effect for that loco. You can then release it manually and acquire the correct address for the new server.
+</Accordion>

@@ -1,0 +1,109 @@
+---
+title: "LongFred Button and Control Reference Map"
+sidebarTitle: "Button Map"
+description: "Complete reference for every physical control on LongFred: nav cluster, rotary encoder, function buttons, direction, EStop, and speed settings."
+---
+
+LongFred exposes its controls across three groups: a seven-button navigation cluster wired directly to the ESP GPIO pins, a rotary encoder with integrated push-button, and a panel of twelve function/action buttons driven by two MCP23017 I²C GPIO expanders. The table below lists every control, its hardware location, and what it does during normal throttle operation.
+
+## Navigation Cluster and Rotary Encoder
+
+The navigation cluster and encoder handle all menu interaction, throttle selection, and speed adjustment.
+
+| Control | GPIO / Location | Default Action |
+|---|---|---|
+| **Up** | GPIO 18 | Scroll up in menus; navigate locomotive list upward |
+| **Down** | GPIO 19 | Scroll down in menus; navigate locomotive list downward |
+| **Left** | GPIO 20 | Move to previous throttle slot |
+| **Right** | GPIO 21 | Move to next throttle slot |
+| **OK** | GPIO 22 | Confirm selection; enter highlighted menu item |
+| **Back** | GPIO 23 | Cancel / return to previous screen |
+| **Menu** | GPIO 10 | Open the main menu from any throttle screen |
+| **Encoder – rotate CCW** | GPIO 2 (A), GPIO 3 (B) | **Increase** speed (counter-clockwise increases by default) |
+| **Encoder – rotate CW** | GPIO 2 (A), GPIO 3 (B) | Decrease speed |
+| **Encoder – press** | GPIO 0 | Speed stop, then toggle direction (SpeedStopThenToggleDirection) |
+
+<Note>
+The encoder button (GPIO 0) doubles as the **wake pin**: pressing it wakes LongFred from sleep mode. The first press wakes the device; subsequent presses apply the SpeedStopThenToggleDirection action.
+</Note>
+
+## Function Buttons, Direction, and EStop
+
+Function buttons F0–F10, the Direction button, and EStop are all read from two MCP23017 I²C expanders.
+
+| Button | Expander | Port / Bit | DCC Function Sent |
+|---|---|---|---|
+| **F0** | MCP0 (0x20) | Port B, bit 0 | DCC F0 |
+| **F1** | MCP0 (0x20) | Port B, bit 1 | DCC F1 |
+| **F2** | MCP0 (0x20) | Port B, bit 2 | DCC F2 |
+| **F3** | MCP0 (0x20) | Port B, bit 3 | DCC F3 |
+| **F4** | MCP0 (0x20) | Port B, bit 4 | DCC F4 |
+| **F5** | MCP0 (0x20) | Port B, bit 5 | DCC F5 |
+| **F6** | MCP0 (0x20) | Port B, bit 6 | DCC F6 |
+| **F7** | MCP0 (0x20) | Port B, bit 7 | DCC F7 |
+| **EStop** | MCP0 (0x20) | Port A, bit 7 | Emergency stop (all speed → 0 immediately) |
+| **F8** | MCP1 (0x21) | Port A, bit 0 | DCC F8 |
+| **F9** | MCP1 (0x21) | Port A, bit 1 | DCC F9 |
+| **F10** | MCP1 (0x21) | Port A, bit 2 | DCC F10 |
+| **Direction** | MCP1 (0x21) | Port A, bit 3 | Toggle forward / reverse |
+
+<Info>
+The default DCC function mapping is a direct one-to-one pass-through: F0 → DCC F0, F1 → DCC F1, … F10 → DCC F10. Up to 32 DCC functions (F0–F31) are supported by the protocol layer, but only F0–F10 have dedicated hardware buttons.
+</Info>
+
+<Note>
+When `TOGGLE_DIRECTION_WHEN_STATIONARY` is active (the default), the Direction button will only toggle direction while the loco is at a standstill. If the loco is moving, press EStop or bring speed to zero first.
+</Note>
+
+## Speed Settings
+
+These firmware constants govern how speed changes are applied when you turn the encoder or use the Speed Multiplier mode.
+
+| Parameter | Value | Meaning |
+|---|---|---|
+| **SPEED_STEP** | 4 | Speed units added or subtracted per encoder detent |
+| **SPEED_STEP_MULTIPLIER** | 3 | Multiplier applied when the fast-step modifier is held (step becomes 4 × 3 = 12) |
+| **Speed Multiplier levels** | 1×, 2×, 4× | Three stages toggled via the Speed Multiplier command (1× = normal, 2× = double step, 4× = quadruple step) |
+| **MAX_SPEED** | 126 | Maximum DCC speed step value transmitted to the command station |
+
+<Tip>
+To change speed rapidly, activate Speed Multiplier mode (see Menu Commands) before turning the encoder. Cycle through 1×, 2×, and 4× to find the right sensitivity for shunting or main-line running.
+</Tip>
+
+## Text Entry and Multitap Character Sets
+
+Wherever LongFred asks you to enter text (for example, a WiFi SSID, password, or locomotive name), the function buttons act as a phone-style multitap keyboard. Press the same key repeatedly to cycle through its characters; pause or press a different key to commit the character.
+
+### Multitap — Function Key Characters
+
+| Key | Characters (tap to cycle) |
+|---|---|
+| **F0** | ` ` (space), `0` |
+| **F1** | `1` |
+| **F2** | `a`, `b`, `c`, `2` |
+| **F3** | `d`, `e`, `f`, `3` |
+| **F4** | `g`, `h`, `i`, `4` |
+| **F5** | `j`, `k`, `l`, `5` |
+| **F6** | `m`, `n`, `o`, `6` |
+| **F7** | `p`, `q`, `r`, `s`, `7` |
+| **F8** | `t`, `u`, `v`, `8` |
+| **F9** | `w`, `x`, `y`, `z`, `9` |
+| **F10** | ` ` (space), `@`, `.` |
+
+### Full Character Set (Nav Scroll)
+
+When navigating a full character picker (for example, during SSID selection), the Up/Down buttons scroll through this ordered set:
+
+```
+(space) a b c d e f g h i j k l m n o p q r s t u v w x y z
+A B C D E F G H I J K L M N O P Q R S T U V W X Y Z
+0 1 2 3 4 5 6 7 8 9 - _ . @
+```
+
+### Digit-Only Character Set (IP / Address Fields)
+
+When entering IP addresses or port numbers, only numeric digits are available:
+
+```
+0 1 2 3 4 5 6 7 8 9
+```

@@ -1,0 +1,95 @@
+---
+title: 'Connecting LongFred to Your Home or Club WiFi Network'
+sidebarTitle: 'WiFi Setup'
+description: 'Step-by-step guide to selecting a WiFi network, scanning for access points, entering a password with multi-tap keys, and saving credentials on LongFred.'
+---
+
+When LongFred powers on it immediately presents the **SSID List** screen, showing up to ten pre-configured networks that have been built into the firmware. Each entry is numbered 0–9 and displayed on its own line. If your layout's access point is already in that list, you can be on track in just a few seconds. If it isn't, a quick live scan finds any nearby network instead. Either way, passwords you type are stored securely in flash memory so you won't need to enter them again on future power-ups.
+
+## Selecting a network from the pre-configured list
+
+<Steps>
+  <Step title="Open the SSID List screen">
+    LongFred lands on the SSID List automatically after the splash screen. You will see up to ten network names prefixed with their index numbers (`0:`, `1:`, `2:`, …).
+  </Step>
+  <Step title="Highlight your network">
+    Press **Nav Up** or **Nav Down** to move the cursor through the list, or press the **digit key** (F0–F9) that matches the network's index number to jump directly to it.
+  </Step>
+  <Step title="Connect">
+    Press **OK** to confirm. LongFred immediately attempts to join the selected network. If that network has a stored password, authentication is automatic.
+  </Step>
+</Steps>
+
+<Note>
+  LongFred allows up to **10 seconds** to establish a WiFi association (`SSID_CONNECTION_TIMEOUT_MS = 10 000 ms`). If the access point does not respond in time the screen returns to the SSID List so you can try again or pick a different network.
+</Note>
+
+## Scanning for networks not in the list
+
+If your access point isn't in the pre-configured list you can run a live scan to discover nearby networks.
+
+<Steps>
+  <Step title="Trigger a scan">
+    From the SSID List screen, press **Nav Right** (or press **OK** followed by **Scan** in the navigation hint at the bottom of the display). LongFred sweeps the 2.4 GHz band and populates the **SSID Scan** screen with discovered networks.
+  </Step>
+  <Step title="Browse the results">
+    Up to five results are shown per page. Use **Nav Up / Down** to move through them, and **Nav Right** to advance to the next page of results. Press **Nav Left** to return to the first page.
+  </Step>
+  <Step title="Select and connect">
+    Press the digit key matching the network's row, or navigate to it and press **OK**. If LongFred has a saved password for that SSID it connects straight away; otherwise it opens the **Password** screen.
+  </Step>
+</Steps>
+
+<Tip>
+  If a network you expect to see is missing from the scan results, check that the access point is **broadcasting its SSID** (not hidden). Hidden networks cannot be discovered by a passive scan.
+</Tip>
+
+## Entering a password
+
+LongFred's display is small and it has no keyboard, so passwords are entered using a **multi-tap** method — the same principle as old mobile phone text entry — combined with navigator cycling for the full character set.
+
+<Steps>
+  <Step title="Open the Password screen">
+    This screen appears automatically whenever you pick a network that has no stored password. The current character being built is shown as a blinking indicator in the centre of the display.
+  </Step>
+  <Step title="Type characters with F-keys (multi-tap)">
+    Each function key maps to a small group of characters, just like a phone keypad. Press a key repeatedly to cycle through its characters. When you stop pressing that key the character is committed and the cursor advances.
+
+    | Key | Characters |
+    |-----|-----------|
+    | **F0** | (space) `0` |
+    | **F1** | `1` |
+    | **F2** | `a b c 2` |
+    | **F3** | `d e f 3` |
+    | **F4** | `g h i 4` |
+    | **F5** | `j k l 5` |
+    | **F6** | `m n o 6` |
+    | **F7** | `p q r s 7` |
+    | **F8** | `t u v 8` |
+    | **F9** | `w x y z 9` |
+    | **F10** | (space) `@ .` |
+  </Step>
+  <Step title="Cycle through the full character set with Nav Up / Down">
+    For characters not reachable by multi-tap — upper-case letters, hyphens, underscores, and so on — use **Nav Up** or **Nav Down** to scroll through the complete character set: `(space) a–z A–Z 0–9 - _ . @`. This is especially useful for mixed-case or special-character passwords.
+  </Step>
+  <Step title="Save and connect">
+    When the full password is shown in the preview line, press **OK**. LongFred saves the credentials to flash memory and attempts to join the network. Press **Back** at any time to cancel without saving.
+  </Step>
+</Steps>
+
+<Info>
+  LongFred stores up to **8 sets of WiFi credentials** in non-volatile storage (NVS). If you add a ninth network, the oldest saved credential is evicted automatically to make room. Credentials survive power cycles, so your usual layout networks connect silently on every boot.
+</Info>
+
+## After a successful connection
+
+Once WiFi is up and an IP address has been obtained, LongFred transitions automatically to the **Server List** screen where it searches for command stations on the network. See [Connecting to a Command Station](/connecting/server-connection) for what happens next.
+
+<CardGroup cols={2}>
+  <Card title="Server Connection" icon="tower-broadcast" href="/connecting/server-connection">
+    Discover WiThrottle and Z21 command stations via mDNS or enter an address manually.
+  </Card>
+  <Card title="Static IP" icon="network-wired" href="/connecting/static-ip">
+    Assign a fixed IP address when your layout has no DHCP server.
+  </Card>
+</CardGroup>

@@ -1,0 +1,210 @@
+---
+title: "LongFred Hardware: Buttons, Encoder, and Display"
+sidebarTitle: "Hardware"
+description: "A complete reference for LongFred's physical controls, OLED display, and GPIO wiring — covering the encoder, nav cluster, function buttons, and I2C peripherals."
+---
+
+LongFred runs on an **ESP32-C6-DevKitC-1U** development board paired with a small set of off-the-shelf modules. This page describes every physical control on the assembled throttle and maps each one to its GPIO pin or I2C expander bit. It is primarily aimed at makers and builders who are assembling or adapting the hardware, but it is also a useful reference for understanding what the buttons do while operating the throttle.
+
+<Note>
+  All pin assignments are defined in a single board support file in the firmware source. Adapting LongFred to a custom PCB means editing that one file — no other source files need to change.
+</Note>
+
+## Hardware Components at a Glance
+
+<CardGroup cols={2}>
+  <Card title="Microcontroller" icon="microchip">
+    **ESP32-C6-DevKitC-1U** — RISC-V single-core, 2.4 GHz WiFi 6 (802.11ax), 4 MB flash.
+  </Card>
+  <Card title="OLED Display" icon="display">
+    **SSD1306** 128×64 monochrome OLED, I2C address `0x3C`, connected on the shared I2C bus.
+  </Card>
+  <Card title="I/O Expanders" icon="sitemap">
+    Two **MCP23017** 16-bit I/O expanders (I2C addresses `0x20` and `0x21`) provide the function buttons, EStop, and Direction button.
+  </Card>
+  <Card title="Rotary Encoder" icon="rotate">
+    **KY-040 / EC11** incremental encoder with push-button, wired directly to ESP32-C6 GPIO pins.
+  </Card>
+</CardGroup>
+
+## I2C Bus
+
+All three I2C peripherals — the SSD1306 OLED and both MCP23017 expanders — share a single I2C bus running at 400 kHz.
+
+| Signal | GPIO |
+|---|---|
+| SDA | **GPIO 6** |
+| SCL | **GPIO 7** |
+| Bus frequency | 400 kHz |
+
+## Rotary Encoder
+
+The rotary encoder is the primary speed control. Its three signals connect directly to ESP32-C6 GPIO pins (active-low, internal pull-ups enabled).
+
+| Encoder signal | GPIO | Function |
+|---|---|---|
+| Channel A (CLK) | **GPIO 2** | Quadrature A phase |
+| Channel B (DT) | **GPIO 3** | Quadrature B phase |
+| Push button | **GPIO 0** | Encoder button / EStop/Direction shortcut |
+
+### Encoder behaviour
+
+<Accordion title="Turning the encoder — speed control">
+  Rotating the encoder adjusts the speed of the loco on the active throttle slot. By default, turning **counter-clockwise increases speed** and turning **clockwise decreases speed**. Each detent moves the speed by 4 steps; holding the encoder while turning activates a 3× multiplier (12 steps per detent) for fast traversal of the speed range. A further 2× multiplier is also available from the menu.
+
+  On the SSID list screen or any text/digit entry screen, encoder rotation scrolls through available characters or list entries rather than changing speed.
+</Accordion>
+
+<Accordion title="Pressing the encoder button — stop then toggle direction">
+  Pressing the encoder button sends a speed-zero command to the active loco. If the loco is already stationary, the press toggles its direction (forward ↔ reverse). This gives you a single-handed "stop and reverse" gesture without reaching for the Direction button.
+
+  The firmware constant for this behaviour is `ENCODER_BUTTON_ACTION = SpeedStopThenToggleDirection`.
+</Accordion>
+
+## Navigation Cluster
+
+The navigation cluster consists of six buttons wired directly to ESP32-C6 GPIO pins. All are active-low with internal pull-ups enabled.
+
+| Button | GPIO | Function |
+|---|---|---|
+| **Up** | GPIO 18 | Move cursor up / scroll list up |
+| **Down** | GPIO 19 | Move cursor down / scroll list down |
+| **Left** | GPIO 20 | Page back / previous item |
+| **Right** | GPIO 21 | Page forward / next item / enter sub-screen |
+| **OK** | GPIO 22 | Confirm selection / acquire loco / save entry |
+| **Back** | GPIO 23 | Go back one screen level / delete last character |
+| **Menu** | GPIO 10 | Open the main menu from the Throttle screen |
+
+<Info>
+  **Menu** (GPIO 10) is technically separate from the directional cluster in the firmware, but it is typically placed adjacent to the nav buttons on the physical PCB for ergonomic reasons.
+</Info>
+
+### Navigation cluster behaviour by screen
+
+| Screen | Up/Down | Left/Right | OK | Back | Menu |
+|---|---|---|---|---|---|
+| SSID list | Move cursor | Page / scan | Connect | — | — |
+| Password entry | Scroll chars | — | Confirm char / save | Delete char | — |
+| Server list | Move cursor | Manual entry | Connect | — | — |
+| Throttle | — | — | Acquire loco | — | Open menu |
+| Menu / sub-menus | Move cursor | — | Confirm | Back one level | — |
+
+## Function Buttons (F0–F10)
+
+The eleven function buttons are routed through the two MCP23017 I/O expanders on the I2C bus. Each button press toggles the corresponding DCC function on the active throttle slot's consist.
+
+| Button | DCC Function | Expander | Port | Bit |
+|---|---|---|---|---|
+| **F0** | Function 0 (headlight) | MCP0 (`0x20`) | B | 0 |
+| **F1** | Function 1 | MCP0 (`0x20`) | B | 1 |
+| **F2** | Function 2 | MCP0 (`0x20`) | B | 2 |
+| **F3** | Function 3 | MCP0 (`0x20`) | B | 3 |
+| **F4** | Function 4 | MCP0 (`0x20`) | B | 4 |
+| **F5** | Function 5 | MCP0 (`0x20`) | B | 5 |
+| **F6** | Function 6 | MCP0 (`0x20`) | B | 6 |
+| **F7** | Function 7 | MCP0 (`0x20`) | B | 7 |
+| **F8** | Function 8 | MCP1 (`0x21`) | A | 0 |
+| **F9** | Function 9 | MCP1 (`0x21`) | A | 1 |
+| **F10** | Function 10 | MCP1 (`0x21`) | A | 2 |
+
+<Tip>
+  During password entry and numeric IP address entry, the **F0–F9** buttons double as digit keys (0–9), providing a much faster way to type numeric input than scrolling with the encoder.
+</Tip>
+
+## Direction Button
+
+The Direction button toggles the direction of the active loco (or consist) between forward and reverse. It is read from the second MCP23017 expander.
+
+| Button | Expander | Port | Bit |
+|---|---|---|---|
+| **Direction** | MCP1 (`0x21`) | A | 3 |
+
+A direction change command is sent to the server immediately on button press. If the loco is currently moving, the speed is not automatically reduced — stop the loco first with the encoder button or the EStop button if you want a clean directional change.
+
+## EStop Button
+
+The EStop button sends an **emergency stop** to every loco on every active throttle slot. It is designed to be physically distinct and easy to find by touch in an emergency.
+
+| Button | Expander | Port | Bit |
+|---|---|---|---|
+| **EStop** | MCP0 (`0x20`) | A | 7 |
+
+<Warning>
+  EStop halts all locos across all six throttle slots simultaneously. It is a layout-wide command, not a per-throttle command. Use it only when you need an immediate full stop of all trains.
+</Warning>
+
+## OLED Display
+
+The SSD1306 OLED renders a fixed 6-row grid layout for all menu and status screens, or a dedicated Throttle view when a loco is active. The display connects over I2C at address `0x3C`.
+
+| Parameter | Value |
+|---|---|
+| Controller | SSD1306 |
+| Resolution | 128 × 64 pixels |
+| Interface | I2C |
+| I2C address | `0x3C` |
+| Bus | Shared with MCP23017 expanders (SDA GPIO 6, SCL GPIO 7) |
+
+### Throttle view
+
+When you are driving a loco, the Throttle view shows:
+
+- **Slot number** and **speed** (0–126) in the header
+- **Direction** indicator (forward / reverse)
+- **Consist** — the DCC address(es) of the acquired loco or locos
+- **Active functions** — a bitmask row indicating which of F0–F28 are currently on
+- **Battery icon** (optional) — displayed if battery monitoring is enabled
+- **Hint bar** at the bottom: `Menu OK Fn  EStop`
+
+### Grid view (menus and setup screens)
+
+All other screens use a 6-row grid. Row 0 is a title or status line; rows 1–4 are content; row 5 is a hint bar. The Splash screen, for example, displays the device name in row 0, firmware version in row 1, and `booting...` in row 5.
+
+## Battery Monitoring
+
+LongFred samples battery voltage through the ADC on **GPIO 1**. The battery level can be displayed as an icon or as an icon with a percentage on the Throttle screen. Tapping a dedicated menu option cycles through the display modes (icon only → icon + percent → hidden).
+
+| Signal | GPIO |
+|---|---|
+| Battery ADC | **GPIO 1** |
+
+Deep sleep is triggered automatically when the battery voltage falls below a configurable threshold, or you can initiate sleep manually via **Menu → Extras → OFF / Sleep**.
+
+## Complete Pin Reference
+
+The table below consolidates every signal used by LongFred firmware for quick reference when building or debugging hardware.
+
+| Signal | GPIO / Address | Notes |
+|---|---|---|
+| I2C SDA | GPIO 6 | Shared: OLED + 2× MCP23017 |
+| I2C SCL | GPIO 7 | Shared: OLED + 2× MCP23017 |
+| Encoder A (CLK) | GPIO 2 | Active-low, pull-up |
+| Encoder B (DT) | GPIO 3 | Active-low, pull-up |
+| Encoder button | GPIO 0 | Also LP GPIO0 deep-sleep wake pin |
+| Nav UP | GPIO 18 | Active-low, pull-up |
+| Nav DOWN | GPIO 19 | Active-low, pull-up |
+| Nav LEFT | GPIO 20 | Active-low, pull-up |
+| Nav RIGHT | GPIO 21 | Active-low, pull-up |
+| Nav OK | GPIO 22 | Active-low, pull-up |
+| Nav BACK | GPIO 23 | Active-low, pull-up |
+| Menu | GPIO 10 | Active-low, pull-up |
+| Battery ADC | GPIO 1 | Voltage divider to battery |
+| MCP INT (unused) | GPIO 11 | Reserved, not used in firmware |
+| OLED | I2C `0x3C` | SSD1306 128×64 |
+| MCP23017 #0 | I2C `0x20` | EStop (A7), F0–F7 (B0–B7) |
+| MCP23017 #1 | I2C `0x21` | F8–F10 (A0–A2), Direction (A3) |
+
+<Note>
+  Avoid using GPIO 4, 5, 8, 9, and 15 for additional peripherals — these are ESP32-C6 strapping pins and may behave unexpectedly during boot or in simulation environments.
+</Note>
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Quick Start" icon="rocket" href="/quickstart">
+    Now that you understand the hardware, follow the step-by-step guide to connect LongFred to your layout and drive your first loco.
+  </Card>
+  <Card title="Introduction" icon="book-open" href="/introduction">
+    Read about supported protocols, compatible command stations, and LongFred's full feature set.
+  </Card>
+</CardGroup>

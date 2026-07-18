@@ -1,0 +1,67 @@
+---
+title: "Change the Display Language on LongFred"
+sidebarTitle: "Language"
+description: "Switch all LongFred menus, hints, and status messages between English, Polish, and German — change takes effect immediately without rebooting."
+---
+
+LongFred ships with three built-in UI languages. Switching the language updates every on-screen string straight away — menus, status messages, throttle hints, and confirmation prompts all change in one step. There is no need to reboot. The chosen language is saved to NVS and remembered across power cycles, so your throttle always starts up in your preferred language.
+
+## Supported languages
+
+<CardGroup cols={2}>
+  <Card title="English (default)" icon="globe">
+    The factory default. All menus and messages are displayed in English.
+  </Card>
+  <Card title="Polski" icon="globe">
+    Full Polish translation of all UI strings, including menus and hints.
+  </Card>
+  <Card title="Deutsch" icon="globe">
+    Full German translation of all UI strings, including menus and hints.
+  </Card>
+</CardGroup>
+
+## Changing the language
+
+<Steps>
+  <Step title="Open the Extras menu">
+    From the **Throttle** screen, press the menu button to open the main menu, then select **Extras** (key `9`).
+  </Step>
+  <Step title="Select Language">
+    On the Extras screen, press **6** (shown as **6 Language** / **6 Jezyk** / **6 Sprache** depending on your current language). The Language selection screen opens.
+  </Step>
+  <Step title="Choose your language">
+    Three options are shown:
+
+    | Key | Language |
+    |-----|----------|
+    | `0` | English |
+    | `1` | Polski |
+    | `2` | Deutsch |
+
+    Press the corresponding key. The option is highlighted to confirm your selection.
+  </Step>
+  <Step title="Confirm">
+    Press **OK**. The language switches immediately — all visible text on the display updates at once. The selection is saved to NVS.
+  </Step>
+</Steps>
+
+<Note>
+  The language change takes effect the moment you press **OK**. You do not need to reboot LongFred — the new language is active for the rest of the session and every subsequent power-on.
+</Note>
+
+<Tip>
+  If you have accidentally switched to a language you cannot read, the Language screen always appears in the same screen layout. Navigate to **Extras** (key `9` from the main menu), then press **6** to open Language, and press **0** to return to English.
+</Tip>
+
+## What changes with the language
+
+Switching the language updates all of the following:
+
+- **Main menu** item labels (Function, Add Loco, Drop Loco, etc.)
+- **Extras menu** item labels (Net Config, Device, Language, etc.)
+- **Status messages** (booting, connecting, no loco selected, etc.)
+- **Input hints** shown at the bottom of every screen
+- **Confirmation messages** (Locos saved, Net saved, Device saved, etc.)
+- **Sleep and battery messages** (Battery low, Waited too long, etc.)
+
+Hardware behaviour — speed steps, button assignments, WiThrottle protocol — is not affected by the language setting.

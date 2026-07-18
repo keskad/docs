@@ -1,0 +1,70 @@
+---
+title: "LongFred: WiFi DCC Throttle for Model Railways"
+sidebarTitle: "Introduction"
+description: "LongFred is an open-source WiFi DCC throttle built on the ESP32-C6, supporting WiThrottle and Z21 protocols to control your model railway layout wirelessly."
+---
+
+LongFred is a wireless DCC throttle controller that runs on an ESP32-C6 development board and connects to your model railway command station over WiFi. It gives you a physical, handheld control surface — rotary encoder, function buttons, navigation cluster, and an OLED display — without any cables between the throttle and the layout. Whether you run JMRI, DCC-EX, or a Roco Z21 system, LongFred speaks the right protocol and gets you driving trains within minutes of first boot.
+
+## What LongFred Does
+
+LongFred firmware scans for WiFi networks, authenticates with your chosen access point, discovers available command stations via mDNS, and then lets you acquire DCC locomotives by address and control them in real time. Up to six independent throttle slots are available, each capable of running a consist of up to ten locos. The OLED display shows speed, direction, active functions, and track power state at a glance.
+
+## Supported Protocols and Command Stations
+
+LongFred supports two industry-standard wireless DCC protocols:
+
+| Protocol | Compatible Systems |
+|---|---|
+| **WiThrottle** | JMRI (any version with WiThrottle server), DCC-EX CommandStation-EX |
+| **Z21** | Roco Z21 and compatible command stations |
+
+When you reach the server selection screen, LongFred displays any servers it finds automatically via mDNS alongside the option to enter an IP address and port manually. The default WiThrottle address is `192.168.4.1:2560` (the DCC-EX access-point default) and the default Z21 address is `192.168.0.111:21105`.
+
+## Key Features
+
+<CardGroup cols={2}>
+  <Card title="WiFi with mDNS Discovery" icon="wifi">
+    Automatically discovers WiThrottle servers on your network using mDNS — no manual IP entry required for supported systems.
+  </Card>
+  <Card title="WiThrottle and Z21" icon="tower-broadcast">
+    Works with JMRI, DCC-EX, and Roco Z21 out of the box. Switch protocol from the server selection screen.
+  </Card>
+  <Card title="Up to 6 Throttle Slots" icon="gauge-high">
+    Run up to six independent throttles simultaneously, each able to control a consist of up to ten locos.
+  </Card>
+  <Card title="Physical Controls" icon="gamepad">
+    Rotary encoder for smooth speed control, dedicated F0–F10 function buttons, Direction button, and a latching EStop button.
+  </Card>
+  <Card title="OLED Display" icon="display">
+    128×64 SSD1306 OLED shows the throttle screen or a menu grid with speed, direction, consist, function states, and battery level.
+  </Card>
+  <Card title="Persistent Memory" icon="floppy-disk">
+    Saves up to 8 WiFi credentials, 12 locos, network config, device name, and language preference in NVS flash storage.
+  </Card>
+  <Card title="Multilingual UI" icon="language">
+    Display language is switchable at runtime between English, Polish, and German — saved across power cycles.
+  </Card>
+  <Card title="Battery Monitoring and Sleep" icon="battery-half">
+    ADC-based battery monitoring with an icon on the throttle screen, plus deep-sleep mode to conserve power when idle.
+  </Card>
+</CardGroup>
+
+## Compatible Hardware
+
+LongFred targets the **ESP32-C6-DevKitC-1U** board paired with an SSD1306 OLED display and two MCP23017 I/O expanders for the button matrix. All GPIO pin assignments are defined in a single board support file, making it straightforward to adapt the firmware to a custom PCB layout.
+
+<Note>
+  LongFred is open-source firmware. If you are building the hardware yourself, refer to the [Hardware Overview](/hardware-overview) page for the complete pin map and wiring guide.
+</Note>
+
+## Ready to Get Going?
+
+<CardGroup cols={2}>
+  <Card title="Quick Start" icon="rocket" href="/quickstart">
+    Power on your LongFred, connect to WiFi, and start driving a loco in under five minutes.
+  </Card>
+  <Card title="Hardware Overview" icon="microchip" href="/hardware-overview">
+    Understand every button, encoder, and GPIO pin on the LongFred control surface.
+  </Card>
+</CardGroup>

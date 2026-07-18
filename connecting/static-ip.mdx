@@ -1,0 +1,111 @@
+---
+title: 'Configure a Static IP Address on Your LongFred Throttle'
+sidebarTitle: 'Static IP'
+description: 'How to assign a fixed IPv4 address, subnet mask, gateway, and DNS server to LongFred when DHCP is unavailable on your layout network.'
+---
+
+By default LongFred requests an IP address automatically via DHCP. This works perfectly on any layout that has a home router or a command station configured as an access point with DHCP enabled. However, some layouts run a minimal access point that serves no DHCP — perhaps a bare DCC-EX module in AP mode, or a dedicated embedded router with a static LAN. In those cases you need to tell LongFred its own IP address manually. You might also prefer a static address simply to make the throttle's address predictable and easy to reserve in your router's DHCP table.
+
+## When to use a static IP
+
+<CardGroup cols={2}>
+  <Card title="No DHCP server" icon="circle-exclamation">
+    Your access point does not assign addresses automatically. Without a static IP, LongFred will sit at the WiFi-connected screen waiting for an address that never arrives.
+  </Card>
+  <Card title="Predictable address" icon="circle-check">
+    You want to pin LongFred to a specific address — for firewall rules, mDNS troubleshooting, or just to keep the same address every session.
+  </Card>
+</CardGroup>
+
+## Accessing Net Config
+
+<Steps>
+  <Step title="Open the main menu">
+    From the throttle screen, press **Menu** (the dedicated menu button). The **Menu** screen lists numbered options.
+  </Step>
+  <Step title="Navigate to Extras">
+    Press `9` or navigate to **Extras** and press **OK**. The **Extras** screen is shown.
+  </Step>
+  <Step title="Open Net Config">
+    Press `1` (shown as `1 Net Config` on the display) or highlight it and press **OK**. The **Net Config** screen shows the current mode — either `DHCP` or `Static` followed by the saved IP address.
+  </Step>
+  <Step title="Start editing">
+    Press **OK** to enter the **IP Edit** sequence.
+  </Step>
+</Steps>
+
+## Walking through the IP edit fields
+
+The IP Edit sequence steps through five fields in order. Press **OK** after each one to advance to the next. Press **Back** at any point to cancel without saving.
+
+### Field 0 — Mode
+
+The display reads `Mode 0 DHCP` or `Mode 1 Static`.
+
+- Press **F0** to set mode `0` (DHCP) and press **OK** to save immediately — no further fields are shown.
+- Press **F1** to set mode `1` (Static) and press **OK** to continue to the IP address field.
+
+### Field 1 — IP address
+
+Enter the four octets of your desired IP address. Use **F0–F9** to type each digit. The display formats the digits into dotted notation as you type (e.g. `192.168.001.050`). Each octet is always three digits — pad with leading zeros if needed (`001` for `1`, `010` for `10`).
+
+<Tip>
+  When you confirm the IP address field, LongFred automatically fills in the gateway as `<your IP with the last octet set to 1>` if no gateway has been saved yet. For example, entering `192.168.1.50` sets the gateway to `192.168.1.1` automatically. You can override this in the Gateway field.
+</Tip>
+
+### Field 2 — Subnet mask (prefix length)
+
+LongFred stores the mask as a prefix length (CIDR notation). Enter a one- or two-digit number between `0` and `32`. The default is **24** (equivalent to `255.255.255.0`), which is correct for almost all home and club layouts. Press **OK** to continue.
+
+### Field 3 — Gateway
+
+Enter the IP address of your router or access point in the same three-digits-per-octet format. Leave blank and press **OK** to clear any saved gateway (useful if there is no router on the layout network).
+
+### Field 4 — DNS server
+
+Enter the IP address of a DNS resolver, or leave blank and press **OK** if name resolution is not needed. Pressing **OK** on this final field saves the complete configuration to NVS and returns you to the throttle screen.
+
+<Info>
+  The full field sequence is: **Mode → IP → Mask → Gateway → DNS**. If you set Mode to `0` (DHCP) and press OK, LongFred saves DHCP mode immediately and skips the remaining fields.
+</Info>
+
+## Input method summary
+
+<Accordion title="Digit entry tips">
+  All IP addresses and the prefix length are entered using the **F0–F9** digit keys — each key types the corresponding digit `0`–`9`. There is no multi-tap cycling in the IP Edit screens; every key press is unambiguous.
+
+  Use **Nav Up / Down** to increment or decrement the digit currently under the cursor if you prefer to adjust rather than retype.
+
+  The display always shows the current field label alongside its formatted value so you know exactly which field you are editing:
+
+  | Display label | Field |
+  |---------------|-------|
+  | `Mode 0 DHCP` / `Mode 1 Static` | DHCP or static mode |
+  | `IP 192.168.001.050` | Device IP address |
+  | `Mask 24` | Subnet prefix length |
+  | `GW 192.168.001.001` | Default gateway |
+  | `DNS 192.168.001.001` | DNS resolver |
+</Accordion>
+
+## Saving and applying the configuration
+
+Settings are written to **non-volatile storage (NVS)** and survive power cycles. The new configuration does **not** take effect on the current connection — it is applied on the next connection attempt. To activate immediately, return to the SSID List screen (via Menu → disconnect or by rebooting LongFred) and reconnect to your network.
+
+<Warning>
+  If you enter a static IP that conflicts with another device on the network — or one that is outside the subnet of the access point — LongFred will connect to WiFi successfully but will not be able to reach the command station. Double-check that your chosen address is within the same subnet as the access point and is not already in use.
+</Warning>
+
+## Reverting to DHCP
+
+To go back to automatic addressing, open **Menu → Extras → Net Config**, press **OK** to edit, then on the Mode field press **F0** (`0`) and press **OK**. LongFred saves DHCP mode immediately and will use dynamic addressing on the next connection.
+
+## Related pages
+
+<CardGroup cols={2}>
+  <Card title="WiFi Setup" icon="wifi" href="/connecting/wifi-setup">
+    Choose a network, scan for access points, and enter passwords with multi-tap keys.
+  </Card>
+  <Card title="Server Connection" icon="tower-broadcast" href="/connecting/server-connection">
+    Discover or manually specify a WiThrottle or Z21 command station.
+  </Card>
+</CardGroup>

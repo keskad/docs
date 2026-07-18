@@ -1,0 +1,129 @@
+---
+title: 'Throwing and Closing Turnouts with LongFred'
+sidebarTitle: 'Turnouts'
+description: 'Control individual turnouts on your layout directly from LongFred by address or by choosing from the server-provided turnout list.'
+---
+
+LongFred gives you two ways to operate turnouts: you can enter a turnout address directly from the menu for fast, ad-hoc control, or you can browse the turnout list that your command station provides and select an entry by name. Both methods send a WiThrottle `Turnout` command to the server, which then drives the physical point motor on your layout.
+
+## Understanding Turnout States
+
+Before operating a turnout it helps to know the two standard positions:
+
+<CardGroup cols={2}>
+  <Card title="Thrown" icon="arrow-turn-right">
+    The turnout is set to the diverging (branching) route. Trains take the
+    curved or branching track.
+  </Card>
+  <Card title="Closed" icon="arrow-right">
+    The turnout is set to the straight-through route. Trains continue along
+    the main line without diverting.
+  </Card>
+</CardGroup>
+
+The server may also report **Unknown** or **Inconsistent** states while a turnout is in transition or its feedback is unavailable.
+
+---
+
+## Method 1 — Throw or Close by Address
+
+Use this method when you know the turnout's DCC address and want to operate it immediately without browsing a list.
+
+<Steps>
+  <Step title="Open the menu">
+    Press the **Menu** button from the throttle screen to open the main menu.
+  </Step>
+  <Step title="Select the action">
+    Press **5** for **Throw Point** or **6** for **Close Point**.
+  </Step>
+  <Step title="Enter the turnout address">
+    Type the address digits on the keypad (for example, `4`, `2` for address 42).
+  </Step>
+  <Step title="Confirm">
+    Press **OK**. LongFred builds the system name from your configured prefix
+    and the digits you entered, then sends the command to the server.
+  </Step>
+</Steps>
+
+### System Name Format
+
+LongFred constructs the WiThrottle system name by concatenating the **turnout prefix** with the address digits you entered:
+
+```
+system name = turnout_prefix + address_digits
+```
+
+With the default prefix of `NT`, entering address `42` sends system name **`NT42`** to the server. Your command station (JMRI, DCC-EX, or similar) maps this name to the physical turnout.
+
+<Info>
+  The turnout prefix is set in the firmware network configuration
+  (`turnout_prefix`). The factory default is `NT`. If your command station
+  uses a different naming convention, ask your layout administrator for the
+  correct prefix and have the firmware recompiled with the updated value.
+</Info>
+
+---
+
+## Method 2 — Select from the Turnout List
+
+If your command station has published a named turnout list, LongFred can display it so you can select entries by name rather than memorising addresses.
+
+<Steps>
+  <Step title="Open the menu">
+    Press the **Menu** button from the throttle screen.
+  </Step>
+  <Step title="Choose Throw or Close">
+    Press **5** (Throw Point) or **6** (Close Point). If the server has
+    provided a turnout list, LongFred opens the **TurnoutList** screen.
+  </Step>
+  <Step title="Navigate the list">
+    The list shows up to **10 entries per page**, identified by a digit
+    prefix (0–9) and the user-friendly name provided by the server. Use
+    **Nav Up / Nav Down** to move the cursor, or press the digit key next to
+    the entry you want.
+  </Step>
+  <Step title="Change page">
+    Press **Nav Right** to advance to the next page of turnouts.
+  </Step>
+  <Step title="Activate">
+    Press **OK** (or the digit key for the highlighted entry). LongFred sends
+    the throw or close command using the system name stored in the list entry.
+  </Step>
+  <Step title="Go back">
+    Press **Back** at any time to return to the previous screen without
+    sending a command.
+  </Step>
+</Steps>
+
+<Note>
+  The turnout list is populated by the command station at connection time. If
+  the list is empty after connecting, your server has not published any
+  turnout entries — use the address-entry method instead. In JMRI you can
+  populate the list by adding turnouts to the Turnout Table and ensuring the
+  WiThrottle server is configured to share them.
+</Note>
+
+---
+
+## Quick Reference
+
+<CardGroup cols={2}>
+  <Card title="Throw by address" icon="keyboard">
+    Menu → **5 Throw Point** → enter digits → **OK**
+  </Card>
+  <Card title="Close by address" icon="keyboard">
+    Menu → **6 Close Point** → enter digits → **OK**
+  </Card>
+  <Card title="Throw from list" icon="list">
+    Menu → **5 Throw Point** → navigate list → **OK**
+  </Card>
+  <Card title="Close from list" icon="list">
+    Menu → **6 Close Point** → navigate list → **OK**
+  </Card>
+</CardGroup>
+
+<Tip>
+  When operating multiple turnouts in sequence, the address-entry method is
+  often quicker: press **5** or **6**, type the address, press **OK**, then
+  repeat immediately for the next turnout.
+</Tip>

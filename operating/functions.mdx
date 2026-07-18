@@ -1,0 +1,81 @@
+---
+title: 'Using DCC Function Buttons F0 to F10 on LongFred'
+sidebarTitle: 'Functions'
+description: 'How to use the eleven function buttons on LongFred to control DCC functions F0–F10, view full function labels, and configure key behaviour with the Fnc/Key toggle.'
+---
+
+LongFred provides eleven physical function buttons, labelled **F0** through **F10**, each directly mapped to the corresponding DCC function number on your locomotive decoder. Pressing a button sends a "function on" command; releasing it sends "function off". This momentary behaviour matches the default DCC convention for non-latching functions. Function buttons only send commands when at least one loco is acquired on the current throttle slot.
+
+## Function button reference
+
+| Button | DCC function | Typical use |
+|--------|-------------|-------------|
+| **F0** | Function 0 | Headlight (applied to **all** locos in a consist) |
+| **F1** | Function 1 | Bell (lead loco only in a consist) |
+| **F2** | Function 2 | Horn / whistle (lead loco only) |
+| **F3–F10** | Functions 3–10 | Aux lights, sound effects, couplers, etc. (lead loco only) |
+
+<Note>
+  The actual function labels — such as "Bell", "Whistle", or "Cab Light" — depend on how the loco is configured in the server roster, not on the button label itself. LongFred downloads the labels from the server when you acquire a roster entry.
+</Note>
+
+## Viewing function labels and states
+
+You can see the full list of function labels and which ones are currently active on the **Function List** screen:
+
+<Steps>
+  <Step title="Open the menu">
+    Press **Menu** from the throttle screen.
+  </Step>
+  <Step title="Select Function">
+    Press **0** (or navigate to **0 Function** and press **OK**). The Function List screen opens, showing ten functions per page. Each entry displays the function number, its label (loaded from the server), and an indicator showing whether it is currently on.
+  </Step>
+  <Step title="Navigate pages">
+    Use the page-forward key to move through pages and see functions **F0–F31**. LongFred supports up to 32 functions in the list, though only F0–F10 have dedicated physical buttons.
+  </Step>
+</Steps>
+
+## Function behaviour in a consist
+
+When you have multiple locos on a single throttle slot (a consist), function routing works as follows:
+
+<CardGroup cols={2}>
+  <Card title="F0 — broadcast to all locos" icon="broadcast-tower">
+    F0 (typically the headlight) is sent to **every loco** in the consist simultaneously, so all headlights turn on and off together.
+  </Card>
+  <Card title="F1–F10 — lead loco only" icon="train-front">
+    All other function buttons target the **lead loco** only. Sounds and non-headlight lights on the trailing locos are controlled by their individual decoders and are not affected by these button presses.
+  </Card>
+</CardGroup>
+
+## Fnc/Key toggle — function list vs direct commands
+
+The **#** key on the throttle screen can open either the **Function List** or the **Direct Commands** screen. By default it opens the Direct Commands screen.
+
+To switch between the two behaviours:
+
+1. Press **Menu → 9 Extras**
+2. Press **0** (shown as **0 Fnc/Key Tgl**) to toggle the mode.
+
+When the toggle is set to show functions, pressing **#** from the throttle screen goes straight to the Function List.
+
+## Direct Commands screen
+
+When the **#** key is set to show direct commands (the default), the Direct Commands screen maps the number keys to commonly used actions:
+
+| Key | Action |
+|-----|--------|
+| `0` | Function F0 |
+| `1` | Function F1 |
+| `2` | Function F2 |
+| `3` | Function F3 |
+| `4` | Function F4 |
+| `5` | Next Throttle — switch to the next active throttle slot |
+| `6` | Speed Multiplier — cycle through 1×, 2×, 4× step sizes |
+| `7` | Reverse — toggle direction |
+| `8` | EStop — emergency stop all locos on all throttles |
+| `*` | Back — return to the throttle screen |
+
+<Tip>
+  The Direct Commands screen gives you quick access to EStop (`8`) and Next Throttle (`5`) without navigating the menu. If you use consists or multi-throttle operation regularly, keep the Fnc/Key toggle set to direct commands for fastest access.
+</Tip>

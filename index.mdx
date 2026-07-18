@@ -1,20 +1,65 @@
 ---
-title: "Introduction"
-description: "Welcome to your project"
+title: "LongFred: Wireless DCC Throttle for Model Railways"
+sidebarTitle: "Home"
+description: "LongFred is a WiFi-based wireless DCC throttle controller that works with WiThrottle and Z21 command stations. Control locos, turnouts, and routes from your layout."
 ---
 
-Write a short description of your product here. What it does, who it's for, and what they can accomplish with it.
+LongFred is a physical wireless throttle controller for model railway layouts. It connects to your DCC command station over WiFi using the WiThrottle or Z21 protocol, letting you drive locos, control turnouts and routes, and manage track power — all from a handheld device with an OLED display, rotary encoder, and function buttons.
+
+<CardGroup cols={2}>
+  <Card title="Quick Start" icon="rocket" href="/quickstart">
+    Power on your LongFred, join your layout WiFi, and take control of a loco in minutes.
+  </Card>
+  <Card title="Hardware Overview" icon="microchip" href="/hardware-overview">
+    Learn about the buttons, encoder, display, and connectors on your LongFred.
+  </Card>
+  <Card title="WiFi Setup" icon="wifi" href="/connecting/wifi-setup">
+    Connect LongFred to your layout network and find your command station automatically.
+  </Card>
+  <Card title="Operating Locos" icon="train" href="/operating/acquiring-locos">
+    Acquire locomotives by address or from your server roster and start driving.
+  </Card>
+</CardGroup>
+
+## What LongFred does
+
+LongFred turns an ESP32-C6 development board into a full-featured wireless throttle. It speaks the WiThrottle protocol (compatible with JMRI, DCC-EX, and other servers) and the Roco Z21 protocol, so it works with the most popular DCC command stations available today.
+
+<CardGroup cols={3}>
+  <Card title="Up to 6 Throttles" icon="sliders">
+    Switch between up to six independent throttle slots, each controlling its own loco or consist.
+  </Card>
+  <Card title="11 Function Buttons" icon="keyboard">
+    Dedicated F0–F10 buttons map directly to DCC functions. Labels are loaded from the server roster.
+  </Card>
+  <Card title="Rotary Encoder" icon="rotate">
+    Turn the encoder to adjust speed smoothly. Press it to stop and toggle direction in one action.
+  </Card>
+  <Card title="Turnout & Route Control" icon="code-branch">
+    Throw or close turnouts and activate routes directly from the on-device menu.
+  </Card>
+  <Card title="mDNS Auto-Discovery" icon="magnifying-glass">
+    LongFred finds WiThrottle servers on your network automatically — no IP address required.
+  </Card>
+  <Card title="Persistent Settings" icon="floppy-disk">
+    WiFi passwords, acquired locos, device name, and network config are saved across power cycles.
+  </Card>
+</CardGroup>
+
+## Get started in three steps
+
+<Steps>
+  <Step title="Connect to your layout WiFi">
+    Power on LongFred, select your network from the SSID list on the display, and enter the password using the function keys and navigation buttons.
+  </Step>
+  <Step title="Find your command station">
+    LongFred uses mDNS to discover WiThrottle servers automatically. Select your server from the list, or enter its IP address and port manually for Z21.
+  </Step>
+  <Step title="Acquire a loco and drive">
+    Enter a DCC address on the throttle screen or pick a loco from your server roster. Turn the encoder to set speed, press the Direction button to reverse.
+  </Step>
+</Steps>
 
 <Tip>
-  Ready to make this your own? Start by editing this page. Update your `docs.json` file to customize your site. Then fill out the [Quickstart](/quickstart) page.
+  If your command station is a DCC-EX system running as a WiThrottle server, LongFred will find it automatically the moment it appears on the network — no configuration needed.
 </Tip>
-
-<Card title="Quickstart" icon="rocket" href="/quickstart">
-  This card links to the quickstart page in your project.
-</Card>
-<Card title="Components" icon="puzzle-piece" href="https://mintlify.com/docs/components">
-  Add cards, callouts, steps, tabs, and more to design and structure your pages.
-</Card>
-<Card title="Settings" icon="gear" href="https://mintlify.com/docs/organize/settings">
-  Set your site name, branding, and navigation in the `docs.json` file.
-</Card>

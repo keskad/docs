@@ -1,0 +1,102 @@
+---
+title: 'Controlling DCC Track Power from LongFred'
+sidebarTitle: 'Track Power'
+description: 'Toggle, turn on, or turn off the DCC booster output that energises your rails and powers your locomotives, directly from LongFred.'
+---
+
+Track power is the DCC booster output that energises the rails, providing both the control signal and the traction power that your locomotives need to run. Without track power on, decoders receive no signal and trains cannot move. LongFred lets you toggle track power on or off directly from the menu, and it always shows you the current power state on the throttle screen so you know at a glance whether the track is live.
+
+## Viewing Track Power State
+
+The throttle screen displays a **power indicator** (`power_on`) at all times. When track power is on the indicator is lit; when power is off or the state is unknown it is shown accordingly. Because track power state is broadcast by the server to every connected client, the indicator updates automatically whenever any throttle or the command station itself changes the power state — you don't need to do anything to refresh it.
+
+<Note>
+  Track power state is a global, server-broadcast value. If another throttle
+  or the command station console changes the track power, your LongFred display
+  will reflect that change immediately.
+</Note>
+
+---
+
+## Toggling Track Power
+
+The quickest way to change track power is to toggle it — one command flips it from whatever it currently is to the opposite state.
+
+<Steps>
+  <Step title="Open the menu">
+    Press the **Menu** button from the throttle screen.
+  </Step>
+  <Step title="Select Track Power">
+    Press **8** for **Trk Power**.
+  </Step>
+  <Step title="Confirm">
+    LongFred sends the track power toggle command to the server and returns
+    to the throttle screen. The power indicator updates to reflect the new
+    state.
+  </Step>
+</Steps>
+
+---
+
+## How the Command Is Sent
+
+LongFred sends the appropriate command for your connected protocol:
+
+<CardGroup cols={2}>
+  <Card title="WiThrottle protocol" icon="wifi">
+    Sends `PPA1` to turn power **on**, or `PPA0` to turn power **off**.
+    These are standard WiThrottle track-power commands supported by JMRI,
+    DCC-EX in WiThrottle mode, and other compatible servers.
+  </Card>
+  <Card title="Z21 protocol" icon="tower-broadcast">
+    Sends the equivalent Z21 track-power command. The Z21 interface translates
+    this into the appropriate X-Bus or DCC instruction to the booster.
+  </Card>
+</CardGroup>
+
+---
+
+## Safety Considerations
+
+<Warning>
+  **Turning off track power stops all trains immediately.** There is no
+  gradual deceleration — all locomotives on the layout lose power at once.
+  Make sure trains are stationary or in a safe position before cutting power,
+  and warn other operators before doing so.
+</Warning>
+
+<Tip>
+  If your locomotives are not responding after you first connect LongFred to
+  the layout, check that track power is **on**. The power indicator on the
+  throttle screen will show you the current state. Press Menu → **8 Trk
+  Power** to toggle it on if needed.
+</Tip>
+
+---
+
+## Quick Reference
+
+<CardGroup cols={2}>
+  <Card title="Toggle track power" icon="power-off">
+    Menu → **8 Trk Power**
+  </Card>
+  <Card title="Check power state" icon="display">
+    Power indicator visible on the throttle screen at all times
+  </Card>
+</CardGroup>
+
+<Accordion title="Why does the power indicator sometimes show Unknown?">
+  When LongFred first connects, it requests the current track power state from
+  the server. Until the server responds, the state is shown as Unknown. This
+  typically resolves within a second or two of connecting. If it persists,
+  check that your command station is running and that the WiThrottle or Z21
+  service is active.
+</Accordion>
+
+<Accordion title="Can I turn power on or off without toggling?">
+  The menu command (`8 Trk Power`) always toggles. If you need explicit
+  on/off control — for example, from a hardware button assignment — the
+  firmware supports dedicated `PowerOn` and `PowerOff` actions that can be
+  mapped to physical buttons in the button configuration. Speak to your
+  firmware maintainer to enable this.
+</Accordion>

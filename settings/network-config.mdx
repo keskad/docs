@@ -1,0 +1,79 @@
+---
+title: "Configure DHCP or Static IP for LongFred"
+sidebarTitle: "Network"
+description: "Switch LongFred between automatic DHCP addressing and a fixed static IP, including subnet mask, gateway, and optional DNS configuration."
+---
+
+By default, LongFred obtains its IP address automatically from your router or access point using DHCP. For most home and club layouts this works perfectly — just connect to your WiFi network and start running trains. If your layout uses fixed IP addresses, or you want to guarantee that LongFred always appears at the same address for troubleshooting, you can assign a static IP directly on the throttle. All network settings are persisted in NVS and take effect on the next WiFi connection.
+
+## Why use a static IP?
+
+<CardGroup cols={2}>
+  <Card title="Consistent address" icon="network-wired">
+    A static IP means LongFred always connects from the same address. This is useful if your command station or JMRI instance is configured to accept connections from specific clients.
+  </Card>
+  <Card title="Easier troubleshooting" icon="magnifying-glass">
+    When you know the exact IP address, you can ping the throttle, check its status, or rule out network issues without hunting through your router's DHCP lease table.
+  </Card>
+</CardGroup>
+
+## Navigating to Network Config
+
+From the **Throttle** screen, open the main menu and navigate to **Extras**, then select **1 Net Config**. The Net Config screen shows the current mode — either **DHCP** or **Static** followed by the configured IP address. Press **OK** to enter the editor.
+
+## Entering IP addresses
+
+Each octet of an IPv4 address is entered as exactly three digits. Pad with leading zeros if needed:
+
+| Address | Enter as |
+|---------|----------|
+| `192.168.1.50` | `192` `168` `001` `050` |
+| `10.0.0.5` | `010` `000` `000` `005` |
+
+Press **F0–F9** to type each digit. Press **OK** to confirm the current field and advance to the next one.
+
+## Configuring the network
+
+<Steps>
+  <Step title="Open the IP editor">
+    On the Net Config screen, press **OK**. The editor opens at the **Mode** field, showing the current setting (`0 DHCP` or `1 Static`).
+  </Step>
+  <Step title="Select Mode">
+    Press **F0** for DHCP or **F1** for Static IP. The label updates immediately to reflect your choice.
+
+    - If you select **0 (DHCP)** and press **OK**, the setting is saved straight away and you skip the remaining fields. LongFred will use DHCP on its next connection.
+    - If you select **1 (Static)**, press **OK** to continue to the IP address field.
+  </Step>
+  <Step title="Enter the IP address">
+    Type each octet as three digits using **F0–F9** — for example, `192`, `168`, `001`, `050` for `192.168.1.50`. Press **OK** to confirm and move to the next field.
+  </Step>
+  <Step title="Enter the subnet prefix length">
+    Type the prefix length as one or two digits — for example, `24` for a `/24` (255.255.255.0) network, or `16` for a `/16`. Press **OK** to advance.
+  </Step>
+  <Step title="Enter the gateway (optional)">
+    Type the gateway IP using the same three-digit-per-octet format. If you leave this field empty and press **OK**, the gateway is auto-filled by replacing the last octet of your IP address with `1` — for example, `192.168.1.50` → gateway `192.168.1.1`.
+  </Step>
+  <Step title="Enter the DNS server (optional)">
+    Type the DNS server IP, or leave blank and press **OK** to skip. If you are unsure, leaving DNS empty is fine for most WiThrottle layouts — DNS is only needed if LongFred needs to resolve hostnames.
+  </Step>
+  <Step title="Settings saved">
+    After the DNS field, LongFred saves all fields to NVS and returns to the Throttle screen. The new network configuration takes effect on the next WiFi connection.
+  </Step>
+</Steps>
+
+<Note>
+  Changes to the network configuration do **not** disconnect you immediately. LongFred applies the new settings the next time it establishes a WiFi connection — for example after a reboot or a manual reconnect.
+</Note>
+
+<Warning>
+  If you enter an incorrect static IP or gateway, LongFred may be unable to reach your WiThrottle server. Return to **Extras → 1 Net Config**, press **OK**, and enter `0` at the Mode field to revert to DHCP, then reboot.
+</Warning>
+
+## Checking the current configuration
+
+The Net Config summary screen (before pressing **OK**) always shows your saved mode:
+
+- **DHCP** — LongFred is configured to request an address automatically.
+- **Static 192.168.1.50** (example) — LongFred will use the shown fixed address.
+
+You can also see the active IP address assigned to the device in the Device Info view once connected.
